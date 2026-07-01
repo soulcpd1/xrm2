@@ -19,6 +19,7 @@ var doctorCmd = &cobra.Command{
 
 		results := []doctor.Result{
 			doctor.KernelChecker{}.Run(),
+			doctor.XrayChecker{}.Run(),
 		}
 
 		doctor.Print(results)
@@ -30,7 +31,6 @@ func init() {
 }
 
 func main() {
-
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
