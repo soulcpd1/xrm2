@@ -21,6 +21,7 @@ var doctorCmd = &cobra.Command{
 			doctor.KernelChecker{}.Run(),
 			doctor.XrayChecker{}.Run(),
 			doctor.ServiceChecker{}.Run(),
+			doctor.ListenerChecker{}.Run(),
 		}
 
 		doctor.Print(results)
