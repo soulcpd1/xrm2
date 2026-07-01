@@ -29,6 +29,7 @@ var doctorCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(doctorCmd)
 	rootCmd.AddCommand(backupCmd)
+	rootCmd.AddCommand(clientCmd)
 }
 
 func Execute() error {
