@@ -24,10 +24,11 @@ var clientListCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
+		port := xray.RealityPort(cfg)
 		clients := xray.RealityClients(cfg)
 
-		fmt.Println("Reality clients")
-		fmt.Println("---------------")
+		fmt.Printf("Reality inbound (port %d)\n", port)
+		fmt.Printf("Clients: %d\n\n", len(clients))
 
 		if len(clients) == 0 {
 			fmt.Println("No clients")
@@ -35,12 +36,17 @@ var clientListCmd = &cobra.Command{
 		}
 
 		for i, c := range clients {
+
 			email := c.Email
 			if email == "" {
 				email = "-"
 			}
 
-			fmt.Printf("%2d. %-30s %s\n", i+1, email, c.ID)
+			fmt.Printf("%2d. %-30s %s\n",
+				i+1,
+				email,
+				c.ID,
+			)
 		}
 	},
 }
