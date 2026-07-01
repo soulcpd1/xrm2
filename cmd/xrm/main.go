@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
+	"github.com/soulcpd1/xrm2/internal/doctor"
 	"github.com/spf13/cobra"
 )
 
@@ -14,10 +14,14 @@ var rootCmd = &cobra.Command{
 
 var doctorCmd = &cobra.Command{
 	Use:   "doctor",
-	Short: "Check system",
-
+	Short: "Run diagnostics",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("XRM2 v0.1")
+
+		results := []doctor.Result{
+			doctor.KernelChecker{}.Run(),
+		}
+
+		doctor.Print(results)
 	},
 }
 
@@ -26,8 +30,8 @@ func init() {
 }
 
 func main() {
+
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
 		os.Exit(1)
 	}
 }
