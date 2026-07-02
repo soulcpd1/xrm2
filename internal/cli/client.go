@@ -14,7 +14,7 @@ var clientCmd = &cobra.Command{
 }
 
 var clientListCmd = &cobra.Command{
-	Use:   "list",
+	Use: "list",
 	Run: func(cmd *cobra.Command, args []string) {
 
 		engine := xray.NewEngine()
@@ -25,14 +25,13 @@ var clientListCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		fmt.Printf("Reality clients\n")
-
-		inb := xray.FindRealityInbound(cfg)
+		inb := cfg.RealityInbound()
 		if inb == nil {
 			fmt.Println("no reality inbound found")
 			return
 		}
 
+		fmt.Println("Reality clients")
 		fmt.Printf("Clients: %d\n\n", len(inb.Settings.Clients))
 
 		for i, c := range inb.Settings.Clients {
@@ -46,16 +45,13 @@ var clientListCmd = &cobra.Command{
 }
 
 var clientAddCmd = &cobra.Command{
-	Use: "add <email>",
+	Use:  "add <email>",
 	Args: cobra.ExactArgs(1),
-
 	Run: func(cmd *cobra.Command, args []string) {
 
-		email := args[0]
-
 		err := xray.ApplyWithEngine(func(cfg *xray.Config) error {
-			return xray.AppendRealityClient(cfg, xray.ClientMutation{
-				Email: email,
+			return cfg.AddClient(xray.ClientMutation{
+				Email: args[0],
 			})
 		})
 
@@ -64,7 +60,7 @@ var clientAddCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		fmt.Println("Client added:", email)
+		fmt.Println("Client added:", args[0])
 	},
 }
 
