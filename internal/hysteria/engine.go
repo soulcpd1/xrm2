@@ -17,6 +17,7 @@ func NewEngine() *Engine {
 }
 
 func (e *Engine) Load() (*Config, error) {
+
 	data, err := os.ReadFile(e.configPath)
 	if err != nil {
 		return nil, err
@@ -32,10 +33,20 @@ func (e *Engine) Load() (*Config, error) {
 }
 
 func (e *Engine) Save(cfg *Config) error {
+
 	data, err := yaml.Marshal(cfg)
 	if err != nil {
 		return err
 	}
 
 	return os.WriteFile(e.configPath, data, 0644)
+}
+
+func (e *Engine) Exists() bool {
+	_, err := os.Stat(e.configPath)
+	return err == nil
+}
+
+func (e *Engine) ConfigPath() string {
+	return e.configPath
 }

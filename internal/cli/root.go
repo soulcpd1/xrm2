@@ -29,6 +29,8 @@ var doctorCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(doctorCmd)
 	rootCmd.AddCommand(clientCmd)
+	rootCmd.AddCommand(hysteriaCmd)
+	rootCmd.AddCommand(tuicCmd)
 }
 
 func Execute() error {

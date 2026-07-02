@@ -1,6 +1,9 @@
 package cli
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/soulcpd1/xrm2/internal/hysteria"
 	"github.com/spf13/cobra"
 )
@@ -12,9 +15,13 @@ var hysteriaCmd = &cobra.Command{
 
 var hysteriaInstallCmd = &cobra.Command{
 	Use:   "install",
-	Short: "Show Hysteria installation plan",
+	Short: "Install Hysteria2",
 	Run: func(cmd *cobra.Command, args []string) {
-		hysteria.PrintInstallPlan()
+
+		if err := hysteria.Install(); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	},
 }
 

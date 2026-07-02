@@ -2,26 +2,30 @@ package hysteria
 
 import (
 	"fmt"
-	"runtime"
+	"os"
+
+	"gopkg.in/yaml.v3"
 )
 
-func PrintInstallPlan() {
+func Install() error {
 
-	fmt.Println("========================================")
-	fmt.Println("        Hysteria2 Installer")
-	fmt.Println("========================================")
-	fmt.Println()
+	if err := os.MkdirAll(ConfigDir, 0755); err != nil {
+		return err
+	}
 
-	fmt.Printf("%-16s %s\n", "OS:", runtime.GOOS)
-	fmt.Printf("%-16s %s\n", "Arch:", runtime.GOARCH)
-	fmt.Printf("%-16s %s\n", "Version:", Version)
-	fmt.Println()
+	cfg := DefaultConfig()
 
-	fmt.Printf("%-16s %s\n", "Binary:", BinaryPath)
-	fmt.Printf("%-16s %s\n", "Config:", ConfigPath)
-	fmt.Printf("%-16s %s\n", "Service:", ServicePath)
-	fmt.Printf("%-16s %s\n", "Data:", DataDir)
-	fmt.Println()
+	data, err := yaml.Marshal(cfg)
+	if err != nil {
+		return err
+	}
 
-	fmt.Println("Status: READY")
+	if err := os.WriteFile(ConfigPath, data, 0644); err != nil {
+		return err
+	}
+
+	fmt.Println("Config created:")
+	fmt.Println(" ", ConfigPath)
+
+	return nil
 }

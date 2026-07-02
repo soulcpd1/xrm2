@@ -1,15 +1,13 @@
 package hysteria
 
 type Config struct {
-	Listen string `yaml:"listen"`
-
-	TLS TLS `yaml:"tls"`
-
-	Auth Auth `yaml:"auth"`
-
-	Transport Transport `yaml:"transport"`
-
-	Masquerade Masquerade `yaml:"masquerade"`
+	Listen       string       `yaml:"listen"`
+	TLS          TLS          `yaml:"tls"`
+	Auth         Auth         `yaml:"auth"`
+	Masquerade   Masquerade   `yaml:"masquerade"`
+	Bandwidth    Bandwidth    `yaml:"bandwidth"`
+	QUIC         QUIC         `yaml:"quic"`
+	IgnoreClient bool         `yaml:"ignoreClientBandwidth,omitempty"`
 }
 
 type TLS struct {
@@ -22,11 +20,24 @@ type Auth struct {
 	Password string `yaml:"password"`
 }
 
-type Transport struct {
-	Type string `yaml:"type"`
-}
-
 type Masquerade struct {
 	Type string `yaml:"type"`
-	URL  string `yaml:"url"`
+	Proxy Proxy  `yaml:"proxy"`
+}
+
+type Proxy struct {
+	URL string `yaml:"url"`
+}
+
+type Bandwidth struct {
+	Up   string `yaml:"up"`
+	Down string `yaml:"down"`
+}
+
+type QUIC struct {
+	InitStreamReceiveWindow     uint64 `yaml:"initStreamReceiveWindow"`
+	MaxStreamReceiveWindow      uint64 `yaml:"maxStreamReceiveWindow"`
+	InitConnectionReceiveWindow uint64 `yaml:"initConnReceiveWindow"`
+	MaxConnectionReceiveWindow  uint64 `yaml:"maxConnReceiveWindow"`
+	MaxIdleTimeout              string `yaml:"maxIdleTimeout"`
 }
