@@ -1,40 +1,30 @@
 package xray
 
 import (
-	"encoding/json"
 	"os"
+	"path/filepath"
 
 	"github.com/soulcpd1/xrm2/internal/backup"
 	"github.com/soulcpd1/xrm2/internal/system"
 )
 
-func Apply(mut func(*Config) error) error {
+func Apply(fn func([]byte) ([]byte, error)) error {
 
 	if _, err := backup.Create(); err != nil {
 		return err
 	}
 
-	raw, err := os.ReadFile(ConfigPath)
+	data, err := os.ReadFile(ConfigPath)
 	if err != nil {
 		return err
 	}
 
-	var cfg Config
-
-	if err := json.Unmarshal(raw, &cfg); err != nil {
-		return err
-	}
-
-	if err := mut(&cfg); err != nil {
-		return err
-	}
-
-	data, err := json.MarshalIndent(cfg, "", "  ")
+	data, err = fn(data)
 	if err != nil {
 		return err
 	}
 
-	tmp := ConfigPath + ".tmp"
+	tmp := filepath.Join(filepath.Dir(ConfigPath), "config.json.tmp")
 
 	if err := Write(tmp, data); err != nil {
 		return err

@@ -3,7 +3,6 @@ package xray
 import (
 	"fmt"
 	"os/exec"
-	"strings"
 )
 
 func Validate(path string) error {
@@ -17,20 +16,8 @@ func Validate(path string) error {
 	)
 
 	out, err := cmd.CombinedOutput()
-
-	output := string(out)
-
-	fmt.Println("========== XRAY VALIDATE OUTPUT ==========")
-	fmt.Println(output)
-	fmt.Println("==========================================")
-
-	// ❗ Xray returns non-zero even on success
-	if strings.Contains(output, "Configuration OK") {
-		return nil
-	}
-
 	if err != nil {
-		return fmt.Errorf("xray validate failed")
+		return fmt.Errorf("xray validate failed:\n%s", string(out))
 	}
 
 	return nil
