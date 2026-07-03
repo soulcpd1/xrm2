@@ -724,3 +724,22 @@ Verification sequence:
 
 Only after this milestone is complete may the "italy" route be switched from the Nebula driver to the Agent driver.
 
+
+---
+
+## Agent Status
+
+Implemented:
+
+✔ TCP listener
+
+✔ proto.ReadRequest()
+
+✔ remote net.Dial()
+
+✔ full duplex io.Copy()
+
+The Agent implementation is considered feature-complete for TCP v1.
+
+The next task is deployment and end-to-end verification.
+
