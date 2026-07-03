@@ -410,3 +410,26 @@ direct | nebula
 
 will produce different network paths.
 
+
+---
+
+# Nebula Integration Rules
+
+XRM MUST coexist with the existing Xray + Nebula deployment.
+
+Requirements:
+
+- Never modify Nebula configuration.
+- Never modify Linux routing tables.
+- Never restart nebula.service.
+- Never assume exclusive ownership of nebula1.
+
+Nebula is an existing transport.
+
+XRM only chooses whether a connection should use:
+
+- Direct
+- Nebula
+
+The Nebula driver is only responsible for creating sockets that use the existing nebula1 interface.
+
