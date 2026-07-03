@@ -132,3 +132,34 @@ Current status:
 - Hysteria TCP: COMPLETE
 - Hysteria UDP: COMPLETE
 - Next: DNS
+
+---
+
+DNS design
+
+Resolver interface
+
+LookupIP(ctx, host)
+
+Implementations
+
+- SystemResolver (current)
+- CacheResolver (next)
+- DoHResolver (future)
+- DoTResolver (future)
+
+Pipeline
+
+Request
+    ↓
+Classifier
+    ↓
+Resolver
+    ↓
+Policy
+    ↓
+Dispatcher
+
+Resolver never decides routing.
+
+Resolver only resolves names.
