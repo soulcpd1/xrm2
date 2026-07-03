@@ -1,30 +1,24 @@
 package classifier
 
 import (
-	"strings"
-
-	"github.com/soulcpd1/xrm2/internal/policy"
+	"github.com/soulcpd1/xrm2/internal/common"
+	"github.com/soulcpd1/xrm2/internal/rules"
 )
 
-type Classifier struct{}
-
-func New() *Classifier {
-	return &Classifier{}
+type Classifier struct {
+	engine *rules.Engine
 }
 
-func (c *Classifier) Category(address string) policy.Category {
-
-	host := strings.ToLower(address)
-
-	switch {
-
-	case strings.Contains(host, "clash"):
-		return policy.Default
-
-	case strings.Contains(host, "supercell"):
-		return policy.Default
-
-	default:
-		return policy.Default
+func New() *Classifier {
+	return &Classifier{
+		engine: rules.New(),
 	}
+}
+
+func (c *Classifier) Engine() *rules.Engine {
+	return c.engine
+}
+
+func (c *Classifier) Resolve(req *common.Request) {
+	req.Category = c.engine.Match(req.Address)
 }

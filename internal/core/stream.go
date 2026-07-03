@@ -14,7 +14,7 @@ func NewStreamBridge(f *Forwarder) *StreamBridge {
 	return &StreamBridge{forwarder: f}
 }
 
-func (b *StreamBridge) Bridge(
+func (b *StreamBridge) BridgeConn(
 	ctx context.Context,
 	driver string,
 	inbound net.Conn,
@@ -44,24 +44,10 @@ func (b *StreamBridge) Bridge(
 		_ = inbound.Close()
 		_ = out.Close()
 		return ctx.Err()
+
 	case err := <-errCh:
 		_ = inbound.Close()
 		_ = out.Close()
 		return err
 	}
-}
-
-func (b *StreamBridge) Dial(
-	ctx context.Context,
-	driver string,
-	network string,
-	address string,
-) (net.Conn, error) {
-
-	return b.forwarder.Dial(
-		ctx,
-		driver,
-		network,
-		address,
-	)
 }

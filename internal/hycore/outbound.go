@@ -1,13 +1,12 @@
 package hycore
 
 import (
-	"context"
 	"net"
 
 	hyserver "github.com/apernet/hysteria/core/v2/server"
-
 	"github.com/google/uuid"
 
+	"github.com/soulcpd1/xrm2/internal/common"
 	"github.com/soulcpd1/xrm2/internal/core"
 	"github.com/soulcpd1/xrm2/internal/policy"
 )
@@ -17,27 +16,19 @@ type Outbound struct {
 }
 
 func NewOutbound(c *core.Core) hyserver.Outbound {
-	return &Outbound{
-		core: c,
-	}
+	return &Outbound{core: c}
 }
 
 func (o *Outbound) TCP(reqAddr string) (net.Conn, error) {
 
-	route, err := o.core.Dispatcher.Resolve(
-		uuid.NewString(),
-		policy.Default,
-	)
-	if err != nil {
-		return nil, err
+	req := &common.Request{
+		SessionID: uuid.NewString(),
+		Network:   "tcp",
+		Address:   reqAddr,
+		Category:  policy.Default,
 	}
 
-	return o.core.Stream.Dial(
-		context.Background(),
-		route.Outbound,
-		"tcp",
-		reqAddr,
-	)
+	return nil, o.core.Dispatcher.Resolve(req)
 }
 
 func (o *Outbound) UDP(reqAddr string) (hyserver.UDPConn, error) {

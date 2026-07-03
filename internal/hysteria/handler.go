@@ -17,19 +17,19 @@ func NewHandler(c *core.Core) *Handler {
 
 func (h *Handler) Resolve(req *common.Request) error {
 
-	category := h.Core.Classifier.Resolve(req)
+	// FIX: Resolve is void, just mutate req or ignore return
+	h.Core.Classifier.Resolve(req)
 
-	route, err := h.Core.Dispatcher.Resolve(
-		req.SessionID,
-		category,
-	)
-	if err != nil {
-		return err
-	}
+	req.Category = req.Category
 
-	return h.Core.Stream.Bridge(
+	return h.Core.Dispatcher.Resolve(req)
+}
+
+func (h *Handler) Forward(req *common.Request) error {
+
+	return h.Core.Stream.BridgeConn(
 		context.Background(),
-		route.Outbound,
+		"tcp",
 		req.Conn,
 		req.Network,
 		req.Address,
