@@ -37,8 +37,5 @@ func (o *Outbound) UDP(reqAddr string) (hyserver.UDPConn, error) {
 		return nil, err
 	}
 
-	_ = pc
-
-	// TODO: adapter net.PacketConn -> hyserver.UDPConn
-	return nil, nil
+	return newUDPConn(pc), nil
 }
