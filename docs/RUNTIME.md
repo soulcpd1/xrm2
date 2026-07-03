@@ -229,3 +229,48 @@ Every change should be executable by copy-paste.
 6. SOCKS/TUN/API.
 
 Do not optimize prematurely.
+
+---
+
+# DNS Integration (current task)
+
+Status:
+- Resolver interface: DONE
+- SystemResolver: DONE
+- Core integration: TODO
+- Dispatcher integration: TODO
+
+Current policy:
+
+DNS is NOT responsible for routing.
+
+DNS only resolves names.
+
+Request flow:
+
+Client
+    ↓
+Classifier
+    ↓
+Resolver
+    ↓
+Policy
+    ↓
+Dispatcher
+    ↓
+Forwarder
+
+Resolver may later support:
+
+- cache
+- hosts
+- DoH
+- DoT
+
+Current implementation target:
+
+SystemResolver only.
+
+No cache.
+No DoH.
+No DoT.
