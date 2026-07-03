@@ -705,3 +705,22 @@ Focus moves to:
 - application-aware routing
 - censorship bypass
 
+
+---
+
+## Next Milestone
+
+Goal:
+
+Run the first XRM Agent on the VPS.
+
+Verification sequence:
+
+1. Agent starts on Nebula address.
+2. Home XRM connects to Agent.
+3. Agent receives proto.Request.
+4. Agent performs net.Dial().
+5. End-to-end TCP connection succeeds.
+
+Only after this milestone is complete may the "italy" route be switched from the Nebula driver to the Agent driver.
+
