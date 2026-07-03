@@ -524,3 +524,22 @@ Next:
 
 Server must replace direct Dial() with a connection to the Agent over Nebula.
 
+
+---
+
+## Routing Policy (mandatory)
+
+Traffic MUST NOT always pass through Italy.
+
+Routing policy:
+
+- RU domains -> Direct
+- Private networks -> Direct
+- LAN -> Direct
+- Everything else -> Nebula Agent -> VPS -> Internet
+
+Dispatcher is the single place that decides this.
+
+The Agent MUST NEVER decide routing policy.
+The Agent only forwards traffic to the Internet.
+
