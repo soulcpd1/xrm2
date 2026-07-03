@@ -940,3 +940,24 @@ The existing Core, Dispatcher, Forwarder and Agent remain unchanged.
 
 Only the runtime entrypoint is replaced.
 
+
+---
+
+## Current milestone
+
+Next implementation target:
+
+Create the first runnable XRM server.
+
+Acceptance criteria:
+
+- binary: xrm serve
+- starts official Hysteria server library
+- listens on configured UDP port
+- phones can connect
+- RequestHook is invoked
+
+Agent integration is NOT the next task.
+
+The first goal is to replace the standalone hysteria process with the XRM runtime.
+
