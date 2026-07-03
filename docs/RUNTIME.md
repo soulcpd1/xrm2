@@ -274,3 +274,74 @@ SystemResolver only.
 No cache.
 No DoH.
 No DoT.
+
+---
+
+# Current Project Status
+
+Last verified:
+
+- Runtime: COMPLETE
+- Hysteria TCP: COMPLETE
+- Hysteria UDP: COMPLETE
+- DNS abstraction: COMPLETE
+- Runtime architecture: STABLE
+
+Mobile clients:
+
+- iPhone: CONNECTS
+- Android: CONNECTS
+
+Traffic:
+
+- Internet access: WORKING
+- Bypass blocked resources: NOT WORKING
+
+This means:
+
+Transport layer is considered COMPLETE.
+
+The remaining issue is traffic routing / bypass logic.
+
+---
+
+# Current Goal
+
+Primary objective:
+
+Reliable unrestricted Internet on iPhone and Android.
+
+Architecture is finished enough.
+Do not redesign Runtime unless a real bug is found.
+
+---
+
+# Next Investigation
+
+Determine why blocked traffic is not bypassed.
+
+Verify, in order:
+
+1. Classifier result.
+2. Policy decision.
+3. Dispatcher selected route.
+4. Forwarder selected driver.
+5. Actual outbound used.
+6. Whether Nebula is ever selected.
+7. Whether Direct is always selected.
+
+Do NOT add new subsystems until this is understood.
+
+---
+
+# Working Agreement
+
+Continue using these rules:
+
+- Update this document every 2–3 assistant responses.
+- Prefer working software over architectural refactoring.
+- Every code change must be copy-paste executable.
+- No manual editing instructions.
+- One component at a time.
+- Green "go build" means do not redesign.
+
