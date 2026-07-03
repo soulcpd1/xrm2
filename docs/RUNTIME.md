@@ -656,3 +656,52 @@ Reason:
 
 The Agent is an internal XRM component, not a public proxy.
 
+
+---
+
+## Current Development State
+
+Infrastructure status:
+
+✔ Runtime pipeline completed
+
+✔ Driver abstraction completed
+
+✔ Hysteria integration completed
+
+✔ XRM protocol v1 completed
+
+✔ Agent skeleton completed
+
+✔ Agent transport completed
+
+✔ Nebula transport selected
+
+Architecture frozen.
+
+No more infrastructure refactoring unless it fixes a bug.
+
+Next phase:
+
+Run the Agent on the VPS.
+
+Verify:
+
+Home XRM
+    ↓
+Nebula
+    ↓
+Agent
+    ↓
+Internet
+
+After successful verification:
+
+Focus moves to:
+
+- GeoIP
+- GeoSite
+- DNS decisions
+- application-aware routing
+- censorship bypass
+
