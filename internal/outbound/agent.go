@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"net"
+
+	"github.com/soulcpd1/xrm2/internal/proto"
 )
 
 type Agent struct {
@@ -40,9 +42,21 @@ func (a *Agent) Dial(
 
 	var d net.Dialer
 
-	// Пока соединяемся только с Agent.
-	// Передача proto.Request будет следующим этапом.
-	return d.DialContext(ctx, "tcp", a.address)
+	conn, err := d.DialContext(ctx, "tcp", a.address)
+	if err != nil {
+		return nil, err
+	}
+
+	err = proto.WriteRequest(conn, proto.Request{
+		Network: network,
+		Address: address,
+	})
+	if err != nil {
+		conn.Close()
+		return nil, err
+	}
+
+	return conn, nil
 }
 
 func (a *Agent) ListenPacket(
