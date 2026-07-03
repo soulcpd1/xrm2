@@ -505,3 +505,22 @@ After successful request exchange, the connection becomes a raw bidirectional st
 
 Future versions may extend the header, but v1 must remain stable.
 
+
+---
+
+## XRM Agent
+
+Status:
+
+✔ accepts TCP connections
+
+✔ reads internal XRM protocol
+
+✔ opens outbound connection
+
+✔ bridges both streams
+
+Next:
+
+Server must replace direct Dial() with a connection to the Agent over Nebula.
+

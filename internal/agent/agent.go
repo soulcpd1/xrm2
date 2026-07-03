@@ -2,7 +2,10 @@ package agent
 
 import (
 	"context"
+	"io"
 	"net"
+
+	"github.com/soulcpd1/xrm2/internal/proto"
 )
 
 type Agent struct {
@@ -45,8 +48,17 @@ func (a *Agent) Run(ctx context.Context) error {
 func (a *Agent) handle(conn net.Conn) {
 	defer conn.Close()
 
-	// TODO:
-	// read destination
-	// dial target
-	// bridge streams
+	req, err := proto.ReadRequest(conn)
+	if err != nil {
+		return
+	}
+
+	dst, err := net.Dial(req.Network, req.Address)
+	if err != nil {
+		return
+	}
+	defer dst.Close()
+
+	go io.Copy(dst, conn)
+	io.Copy(conn, dst)
 }
