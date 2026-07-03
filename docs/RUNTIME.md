@@ -802,3 +802,32 @@ Network
 
 This separation allows replacing transports without changing routing policy.
 
+
+---
+
+## Integration Phase
+
+From this point the priority is runtime verification.
+
+Rule:
+
+One change → One test.
+
+Avoid architectural refactoring until the first successful end-to-end connection is achieved.
+
+Current objective:
+
+Phone
+    ↓
+Hysteria
+    ↓
+Dispatcher
+    ↓
+Agent Driver
+    ↓
+Nebula
+    ↓
+XRM Agent
+    ↓
+Internet
+
