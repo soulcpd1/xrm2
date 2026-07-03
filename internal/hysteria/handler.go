@@ -29,7 +29,7 @@ func (h *Handler) Forward(req *common.Request) error {
 
 	return h.Core.Stream.BridgeConn(
 		context.Background(),
-		"tcp",
+		req.Route.Outbound,
 		req.Conn,
 		req.Network,
 		req.Address,
