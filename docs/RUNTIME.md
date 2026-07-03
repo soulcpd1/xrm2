@@ -345,3 +345,29 @@ Continue using these rules:
 - One component at a time.
 - Green "go build" means do not redesign.
 
+
+---
+
+# Investigation Strategy
+
+Current hypothesis:
+
+The bypass failure is most likely inside the runtime decision chain.
+
+Investigation order:
+
+Request
+  ↓
+Classifier
+  ↓
+Policy
+  ↓
+Dispatcher
+  ↓
+Forwarder
+  ↓
+Outbound Driver
+
+At each stage we will verify actual runtime values instead of assuming they are correct.
+
+No new features until the decision chain is verified.
