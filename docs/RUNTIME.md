@@ -560,3 +560,26 @@ Next commit:
 - Agent performs net.Dial()
 - stream becomes transparent
 
+
+---
+
+## Agent Integration Status
+
+Completed:
+
+- XRM Agent skeleton
+- Internal transport protocol (v1)
+- Agent outbound driver
+- TCP stream forwarding inside Agent
+
+Current limitation:
+
+The Agent driver still connects only to the Agent itself.
+The destination request (proto.Request) is not yet sent.
+
+The routing policy remains:
+
+RU / Private / LAN -> Direct
+
+Everything else -> Agent (after transport integration).
+
