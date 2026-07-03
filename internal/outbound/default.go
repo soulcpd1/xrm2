@@ -6,6 +6,7 @@ func Default() *Manager {
 
 	m.Register(NewDirect())
 	m.Register(NewNebula())
+	m.Register(NewAgent("192.168.100.1:7000"))
 
 	return m
 }

@@ -543,3 +543,20 @@ Dispatcher is the single place that decides this.
 The Agent MUST NEVER decide routing policy.
 The Agent only forwards traffic to the Internet.
 
+
+---
+
+## Agent Driver
+
+Status:
+
+✔ New outbound driver: agent
+
+Current behavior:
+- opens TCP connection to XRM Agent over Nebula
+
+Next commit:
+- send proto.Request
+- Agent performs net.Dial()
+- stream becomes transparent
+
