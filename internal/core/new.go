@@ -25,7 +25,7 @@ func New() *Core {
 		},
 		{
 			Name:     "italy",
-			Outbound: "nebula",
+			Outbound: "agent",
 		},
 	})
 

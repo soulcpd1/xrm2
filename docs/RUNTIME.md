@@ -831,3 +831,18 @@ XRM Agent
     ↓
 Internet
 
+
+---
+
+## First Agent Routing Test
+
+Temporary integration rule:
+
+Route "italy" uses the Agent driver.
+
+Reason:
+
+This is an integration test only.
+
+After end-to-end verification the routing layer may be redesigned without changing Policy.
+
