@@ -41,3 +41,17 @@ func (d *Direct) Dial(
 		address,
 	)
 }
+
+func (d *Direct) ListenPacket(
+	ctx context.Context,
+	address string,
+) (net.PacketConn, error) {
+
+	var lc net.ListenConfig
+
+	return lc.ListenPacket(
+		ctx,
+		"udp",
+		address,
+	)
+}

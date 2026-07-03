@@ -17,4 +17,9 @@ type Driver interface {
 		network string,
 		address string,
 	) (net.Conn, error)
+
+	ListenPacket(
+		ctx context.Context,
+		address string,
+	) (net.PacketConn, error)
 }

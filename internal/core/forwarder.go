@@ -29,3 +29,20 @@ func (f *Forwarder) Dial(
 
 	return d.Dial(ctx, network, address)
 }
+
+func (f *Forwarder) ListenPacket(
+	ctx context.Context,
+	driver string,
+	address string,
+) (net.PacketConn, error) {
+
+	d, err := f.Outbound.Driver(driver)
+	if err != nil {
+		return nil, err
+	}
+
+	return d.ListenPacket(
+		ctx,
+		address,
+	)
+}

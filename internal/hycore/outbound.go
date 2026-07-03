@@ -46,10 +46,6 @@ func (o *Outbound) TCP(reqAddr string) (net.Conn, error) {
 	)
 }
 
-func (o *Outbound) UDP(reqAddr string) (hyserver.UDPConn, error) {
-	return nil, nil
-}
-
 func (o *Outbound) CheckUDP(reqAddr string) error {
 	return nil
 }

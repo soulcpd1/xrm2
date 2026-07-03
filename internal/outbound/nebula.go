@@ -47,3 +47,17 @@ func (n *Nebula) Dial(
 		address,
 	)
 }
+
+func (n *Nebula) ListenPacket(
+	ctx context.Context,
+	address string,
+) (net.PacketConn, error) {
+
+	var lc net.ListenConfig
+
+	return lc.ListenPacket(
+		ctx,
+		"udp",
+		address,
+	)
+}
