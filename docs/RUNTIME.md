@@ -163,3 +163,69 @@ Dispatcher
 Resolver never decides routing.
 
 Resolver only resolves names.
+
+---
+
+# Development Rules
+
+These rules are part of the project.
+
+## Goal
+
+Primary goal:
+
+Get unrestricted Internet on phones as soon as possible.
+
+Architecture exists to support this goal, not vice versa.
+
+---
+
+## Working Rules
+
+1. Every 2–3 assistant responses update this document.
+
+2. Before every major component (DNS, SOCKS, API, TUN, etc.) update this document.
+
+3. After finishing a major component update this document.
+
+4. Never redesign working code without a real reason.
+
+5. Green "go build" means the current architecture is stable.
+
+---
+
+## Assistant Rules
+
+Assistant MUST provide ready-to-run shell commands.
+
+Preferred:
+
+- cat > file <<'EOF'
+- python scripts
+- go fmt
+- go build
+- git commit
+
+Avoid:
+
+- nano
+- vim
+- manual editing
+- "find this line"
+- "replace this"
+- partial snippets requiring manual merge
+
+Every change should be executable by copy-paste.
+
+---
+
+## Current Priority
+
+1. Working Internet on Android phones.
+2. Stable Runtime.
+3. DNS.
+4. Rules.
+5. ACL.
+6. SOCKS/TUN/API.
+
+Do not optimize prematurely.
