@@ -433,3 +433,16 @@ XRM only chooses whether a connection should use:
 
 The Nebula driver is only responsible for creating sockets that use the existing nebula1 interface.
 
+
+---
+
+# Nebula Driver Design
+
+The Nebula driver is independent of Xray.
+
+Xray remains a separate application using the same Nebula network.
+
+XRM will not reuse Xray routing logic.
+
+Instead, the Nebula outbound driver will create connections through the existing `nebula1` interface while leaving Xray and Nebula configuration untouched.
+
