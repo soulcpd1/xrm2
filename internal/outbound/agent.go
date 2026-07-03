@@ -2,6 +2,7 @@ package outbound
 
 import (
 	"context"
+	"errors"
 	"net"
 )
 
@@ -39,7 +40,15 @@ func (a *Agent) Dial(
 
 	var d net.Dialer
 
-	// Пока просто подключаемся к XRM Agent.
-	// Протокол Request подключим следующим коммитом.
+	// Пока соединяемся только с Agent.
+	// Передача proto.Request будет следующим этапом.
 	return d.DialContext(ctx, "tcp", a.address)
+}
+
+func (a *Agent) ListenPacket(
+	ctx context.Context,
+	address string,
+) (net.PacketConn, error) {
+
+	return nil, errors.New("agent UDP not implemented yet")
 }
