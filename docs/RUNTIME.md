@@ -446,3 +446,43 @@ XRM will not reuse Xray routing logic.
 
 Instead, the Nebula outbound driver will create connections through the existing `nebula1` interface while leaving Xray and Nebula configuration untouched.
 
+
+---
+
+# Architecture Decision (2026-07-04)
+
+The project goal has changed from "replace Xray" to building an independent transport.
+
+Current situation:
+
+- VLESS + Reality is already being blocked by mobile operators.
+- Amnezia works but requires initial connectivity.
+- Nebula between Home and VPS is stable and permanent.
+
+Therefore XRM will use Nebula as the transport between nodes.
+
+Future architecture:
+
+Phone
+    ↓
+Hysteria
+    ↓
+XRM Server
+    ↓
+Nebula
+    ↓
+XRM Agent (VPS)
+    ↓
+Internet
+
+The VPS agent is responsible only for:
+- accepting streams;
+- creating outbound TCP/UDP connections;
+- relaying packets.
+
+No VLESS/Reality dependency is planned.
+
+Next milestone:
+
+Implement XRM Agent running on the VPS and define the internal transport protocol between Server and Agent.
+
