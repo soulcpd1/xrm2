@@ -899,3 +899,44 @@ Responsibilities:
 
 Only after "xrm serve" is operational should routing, Agent and policy be tested.
 
+
+---
+
+## Runtime redesign
+
+IMPORTANT
+
+The current internal/hysteria package is NOT a real Hysteria server.
+
+Current implementation contains only development stubs:
+
+- TCP listener
+- fake parser
+- placeholder target resolver
+
+It MUST NOT evolve into a custom VPN protocol.
+
+The production runtime MUST embed the official Hysteria server library.
+
+Target architecture:
+
+Official Hysteria (QUIC)
+        ↓
+RequestHook
+        ↓
+common.Request
+        ↓
+Classifier
+        ↓
+Dispatcher
+        ↓
+Forwarder
+        ↓
+Driver
+        ↓
+Agent / Direct
+
+The existing Core, Dispatcher, Forwarder and Agent remain unchanged.
+
+Only the runtime entrypoint is replaced.
+
