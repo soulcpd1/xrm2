@@ -2,6 +2,7 @@ package core
 
 import (
 	"github.com/soulcpd1/xrm2/internal/classifier"
+	"github.com/soulcpd1/xrm2/internal/dns"
 	"github.com/soulcpd1/xrm2/internal/outbound"
 	"github.com/soulcpd1/xrm2/internal/policy"
 	"github.com/soulcpd1/xrm2/internal/route"
@@ -16,6 +17,8 @@ type Core struct {
 	Outbound   *outbound.Manager
 	Dispatcher *routing.Dispatcher
 	Classifier *classifier.Classifier
+
+	DNS dns.Resolver
 
 	Forwarder *Forwarder
 	Stream    *StreamBridge

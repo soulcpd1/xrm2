@@ -2,6 +2,7 @@ package core
 
 import (
 	"github.com/soulcpd1/xrm2/internal/classifier"
+	"github.com/soulcpd1/xrm2/internal/dns"
 	"github.com/soulcpd1/xrm2/internal/outbound"
 	"github.com/soulcpd1/xrm2/internal/policy"
 	"github.com/soulcpd1/xrm2/internal/route"
@@ -14,6 +15,8 @@ func New() *Core {
 
 	sessions := session.New()
 	engine := policy.NewEngine()
+
+	resolver := dns.NewSystem()
 
 	routes := route.New([]route.Route{
 		{
@@ -56,6 +59,7 @@ func New() *Core {
 		Routes:     routes,
 		Dispatcher: dispatcher,
 		Classifier: cls,
+		DNS:        resolver,
 		Outbound:   ob,
 		Forwarder:  forwarder,
 		Stream:     stream,
