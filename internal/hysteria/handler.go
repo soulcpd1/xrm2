@@ -1,8 +1,10 @@
 package hysteria
 
 import (
+	"context"
+
+	"github.com/soulcpd1/xrm2/internal/common"
 	"github.com/soulcpd1/xrm2/internal/core"
-	"github.com/soulcpd1/xrm2/internal/policy"
 )
 
 type Handler struct {
@@ -10,30 +12,26 @@ type Handler struct {
 }
 
 func NewHandler(c *core.Core) *Handler {
-	return &Handler{
-		Core: c,
-	}
+	return &Handler{Core: c}
 }
 
-func (h *Handler) Resolve(
-	sessionID string,
-	category policy.Category,
-) error {
+func (h *Handler) Resolve(req *common.Request) error {
+
+	category := h.Core.Classifier.Resolve(req)
 
 	route, err := h.Core.Dispatcher.Resolve(
-		sessionID,
+		req.SessionID,
 		category,
 	)
-
 	if err != nil {
 		return err
 	}
 
-	_, err = h.Core.Outbound.Driver(route.Outbound)
-
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return h.Core.Stream.Bridge(
+		context.Background(),
+		route.Outbound,
+		req.Conn,
+		req.Network,
+		req.Address,
+	)
 }
