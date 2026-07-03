@@ -1,5 +1,10 @@
 package outbound
 
+import (
+	"context"
+	"net"
+)
+
 type Direct struct{}
 
 func NewDirect() *Direct {
@@ -22,6 +27,17 @@ func (d *Direct) Ready() bool {
 	return true
 }
 
-func (d *Direct) Forward(conn any) error {
-	return nil
+func (d *Direct) Dial(
+	ctx context.Context,
+	network string,
+	address string,
+) (net.Conn, error) {
+
+	var nd net.Dialer
+
+	return nd.DialContext(
+		ctx,
+		network,
+		address,
+	)
 }

@@ -1,6 +1,9 @@
 package outbound
 
-import "net"
+import (
+	"context"
+	"net"
+)
 
 type Nebula struct{}
 
@@ -27,13 +30,20 @@ func (n *Nebula) Ready() bool {
 		return false
 	}
 
-	if iface.Flags&net.FlagUp == 0 {
-		return false
-	}
-
-	return true
+	return iface.Flags&net.FlagUp != 0
 }
 
-func (n *Nebula) Forward(conn any) error {
-	return nil
+func (n *Nebula) Dial(
+	ctx context.Context,
+	network string,
+	address string,
+) (net.Conn, error) {
+
+	var nd net.Dialer
+
+	return nd.DialContext(
+		ctx,
+		network,
+		address,
+	)
 }

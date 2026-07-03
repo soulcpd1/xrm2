@@ -1,5 +1,10 @@
 package outbound
 
+import (
+	"context"
+	"net"
+)
+
 type Driver interface {
 	Name() string
 
@@ -7,5 +12,9 @@ type Driver interface {
 	Down() error
 	Ready() bool
 
-	Forward(any) error
+	Dial(
+		ctx context.Context,
+		network string,
+		address string,
+	) (net.Conn, error)
 }
