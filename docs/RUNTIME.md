@@ -486,3 +486,22 @@ Next milestone:
 
 Implement XRM Agent running on the VPS and define the internal transport protocol between Server and Agent.
 
+
+---
+
+## Internal XRM Protocol
+
+Current protocol (v1):
+
+Client ----> Agent
+
+uint16 network_length
+network bytes
+
+uint16 address_length
+address bytes
+
+After successful request exchange, the connection becomes a raw bidirectional stream.
+
+Future versions may extend the header, but v1 must remain stable.
+
