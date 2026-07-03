@@ -865,3 +865,37 @@ Pass Route.Outbound from Handler to StreamBridge.
 
 No routing logic belongs inside StreamBridge.
 
+
+---
+
+## Runtime milestone
+
+Current state:
+
+- XRM runtime components exist.
+- Agent exists.
+- Dispatcher exists.
+- Forwarder exists.
+- StreamBridge exists.
+
+BUT
+
+No XRM server process exists yet.
+
+Phones are still connected to the official Hysteria server started by systemd.
+
+Therefore none of the XRM runtime code participates in real traffic.
+
+Next milestone:
+
+Implement "xrm serve".
+
+Responsibilities:
+
+- initialize Core
+- initialize Hysteria server
+- connect internal/hysteria.Handler
+- expose the same listening interface as the official Hysteria server
+
+Only after "xrm serve" is operational should routing, Agent and policy be tested.
+
