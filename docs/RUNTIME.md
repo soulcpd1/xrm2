@@ -633,3 +633,26 @@ VPS (Italy)
 
 The Agent is completely stateless.
 
+
+---
+
+## Security Rules
+
+The XRM Agent MUST NEVER expose a public listener.
+
+Forbidden:
+
+- 0.0.0.0:7000
+- public Internet access
+
+Required:
+
+- listen only on Nebula interface
+- default: 192.168.100.1:7000
+- configurable address
+- all Agent traffic goes through Nebula
+
+Reason:
+
+The Agent is an internal XRM component, not a public proxy.
+
