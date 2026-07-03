@@ -18,9 +18,9 @@ func main() {
 	)
 	defer cancel()
 
-	a := agent.New("0.0.0.0:7000")
+	a := agent.New("192.168.100.1:7000")
 
-	log.Println("XRM Agent listening on :7000")
+	log.Println("XRM Agent listening on 192.168.100.1:7000")
 
 	if err := a.Run(ctx); err != nil {
 		log.Fatal(err)

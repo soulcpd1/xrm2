@@ -743,3 +743,21 @@ The Agent implementation is considered feature-complete for TCP v1.
 
 The next task is deployment and end-to-end verification.
 
+
+---
+
+## Agent Listen Policy
+
+The default XRM Agent listen address is:
+
+192.168.100.1:7000
+
+The Agent MUST NOT bind to:
+
+- 0.0.0.0
+- :7000
+
+Reason:
+
+The Agent is reachable only through the Nebula overlay network and must never expose a public TCP listener.
+
