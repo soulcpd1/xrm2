@@ -614,3 +614,22 @@ Next milestone:
 
 Run Agent as a standalone service on the VPS and redirect the "italy" route from the Nebula driver to the Agent driver.
 
+
+---
+
+## XRM Agent executable
+
+Executable:
+
+cmd/xrm-agent
+
+Default listen:
+
+0.0.0.0:7000
+
+Deployment target:
+
+VPS (Italy)
+
+The Agent is completely stateless.
+
