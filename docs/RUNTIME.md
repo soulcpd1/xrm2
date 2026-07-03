@@ -761,3 +761,44 @@ Reason:
 
 The Agent is reachable only through the Nebula overlay network and must never expose a public TCP listener.
 
+
+---
+
+## Route vs Driver
+
+IMPORTANT
+
+Route is a routing decision.
+
+Examples:
+
+- home
+- italy
+- backup
+
+Driver is a transport implementation.
+
+Examples:
+
+- direct
+- nebula
+- agent
+
+Routes MUST NOT depend directly on transport implementations.
+
+Future execution chain:
+
+Classifier
+    ↓
+Policy
+    ↓
+Route
+    ↓
+Route Executor
+    ↓
+Driver
+    ↓
+Network
+
+This separation allows replacing transports without changing routing policy.
+
