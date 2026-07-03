@@ -17,5 +17,6 @@ type Core struct {
 	Dispatcher *routing.Dispatcher
 	Classifier *classifier.Classifier
 
-	Stream *StreamBridge
+	Forwarder *Forwarder
+	Stream    *StreamBridge
 }

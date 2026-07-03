@@ -18,7 +18,6 @@ func NewDispatcher(
 	p *policy.Engine,
 	r *route.Manager,
 ) *Dispatcher {
-
 	return &Dispatcher{
 		Sessions: s,
 		Policy:   p,
@@ -27,7 +26,6 @@ func NewDispatcher(
 }
 
 func (d *Dispatcher) Resolve(req *common.Request) error {
-
 	decision := d.Policy.Resolve(req.Category)
 
 	rt, err := d.Routes.Get(string(decision.Route))

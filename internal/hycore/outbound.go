@@ -1,6 +1,7 @@
 package hycore
 
 import (
+	"context"
 	"net"
 
 	hyserver "github.com/apernet/hysteria/core/v2/server"
@@ -28,7 +29,21 @@ func (o *Outbound) TCP(reqAddr string) (net.Conn, error) {
 		Category:  policy.Default,
 	}
 
-	return nil, o.core.Dispatcher.Resolve(req)
+	if err := o.core.Dispatcher.Resolve(req); err != nil {
+		return nil, err
+	}
+
+	driver := "direct"
+	if req.Route != nil {
+		driver = req.Route.Outbound
+	}
+
+	return o.core.Forwarder.Dial(
+		context.Background(),
+		driver,
+		req.Network,
+		req.Address,
+	)
 }
 
 func (o *Outbound) UDP(reqAddr string) (hyserver.UDPConn, error) {
