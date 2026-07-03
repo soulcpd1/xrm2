@@ -13,8 +13,8 @@ func (KernelChecker) Run() Result {
 
 	if err != nil {
 		return Result{
-			Name: "Kernel",
-			OK:   false,
+			Name:   "Kernel",
+			OK:     false,
 			Detail: err.Error(),
 		}
 	}

@@ -9,9 +9,9 @@ import (
 )
 
 type Core struct {
-	Sessions  *session.Manager
-	Policy    *policy.Engine
-	Routes    *route.Manager
-	Outbound  *outbound.Manager
+	Sessions   *session.Manager
+	Policy     *policy.Engine
+	Routes     *route.Manager
+	Outbound   *outbound.Manager
 	Dispatcher *routing.Dispatcher
 }

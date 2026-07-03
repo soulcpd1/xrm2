@@ -7,13 +7,13 @@ func DefaultRoutes() []route.Route {
 	return []route.Route{
 
 		{
-			Name: "home",
+			Name:     "home",
 			Outbound: "home",
 			Priority: 10,
 		},
 
 		{
-			Name: "italy",
+			Name:     "italy",
 			Outbound: "italy",
 			Priority: 100,
 			Fallback: "home",

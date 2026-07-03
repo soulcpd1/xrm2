@@ -1,13 +1,13 @@
 package hysteria
 
 type Config struct {
-	Listen       string       `yaml:"listen"`
-	TLS          TLS          `yaml:"tls"`
-	Auth         Auth         `yaml:"auth"`
-	Masquerade   Masquerade   `yaml:"masquerade"`
-	Bandwidth    Bandwidth    `yaml:"bandwidth"`
-	QUIC         QUIC         `yaml:"quic"`
-	IgnoreClient bool         `yaml:"ignoreClientBandwidth,omitempty"`
+	Listen       string     `yaml:"listen"`
+	TLS          TLS        `yaml:"tls"`
+	Auth         Auth       `yaml:"auth"`
+	Masquerade   Masquerade `yaml:"masquerade"`
+	Bandwidth    Bandwidth  `yaml:"bandwidth"`
+	QUIC         QUIC       `yaml:"quic"`
+	IgnoreClient bool       `yaml:"ignoreClientBandwidth,omitempty"`
 }
 
 type TLS struct {
@@ -21,7 +21,7 @@ type Auth struct {
 }
 
 type Masquerade struct {
-	Type string `yaml:"type"`
+	Type  string `yaml:"type"`
 	Proxy Proxy  `yaml:"proxy"`
 }
 

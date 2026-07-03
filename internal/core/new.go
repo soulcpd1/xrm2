@@ -25,10 +25,10 @@ func New() *Core {
 	)
 
 	return &Core{
-		Sessions:  sessions,
-		Policy:    engine,
-		Routes:    routes,
-		Outbound:  ob,
+		Sessions:   sessions,
+		Policy:     engine,
+		Routes:     routes,
+		Outbound:   ob,
 		Dispatcher: dispatcher,
 	}
 }

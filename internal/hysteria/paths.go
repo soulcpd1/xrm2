@@ -1,7 +1,6 @@
 package hysteria
 
 const (
-
 	Version = "v2.6.3"
 
 	BinaryPath = "/usr/local/bin/hysteria"

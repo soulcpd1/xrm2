@@ -8,7 +8,7 @@ type Inbound struct {
 	Tag            string         `json:"tag"`
 	Port           int            `json:"port"`
 	StreamSettings StreamSettings `json:"streamSettings"`
-	Settings       Settings      `json:"settings"`
+	Settings       Settings       `json:"settings"`
 }
 
 type Settings struct {
@@ -22,8 +22,8 @@ type Client struct {
 }
 
 type StreamSettings struct {
-	Security        string           `json:"security"`
-	RealitySettings RealitySettings  `json:"realitySettings"`
+	Security        string          `json:"security"`
+	RealitySettings RealitySettings `json:"realitySettings"`
 }
 
 type RealitySettings struct {

@@ -35,5 +35,5 @@ func (n *Nebula) Ready() bool {
 }
 
 func (n *Nebula) Forward(conn any) error {
-        return nil
+	return nil
 }

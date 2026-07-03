@@ -1,5 +1,7 @@
 package session
 
+import "time"
+
 func (m *Manager) Get(id string) (*Session, bool) {
 
 	m.mu.RLock()
@@ -13,6 +15,12 @@ func (m *Manager) Put(id string, s *Session) {
 
 	m.mu.Lock()
 	defer m.mu.Unlock()
+
+	s.LastSeen = time.Now()
+
+	if s.CreatedAt.IsZero() {
+		s.CreatedAt = time.Now()
+	}
 
 	m.sessions[id] = s
 }
