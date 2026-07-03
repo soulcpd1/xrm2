@@ -846,3 +846,22 @@ This is an integration test only.
 
 After end-to-end verification the routing layer may be redesigned without changing Policy.
 
+
+---
+
+## Integration Bug #1
+
+Problem:
+
+Dispatcher successfully resolves Route.
+
+Handler ignores Route.Outbound.
+
+StreamBridge therefore never receives the selected driver.
+
+Current fix:
+
+Pass Route.Outbound from Handler to StreamBridge.
+
+No routing logic belongs inside StreamBridge.
+
