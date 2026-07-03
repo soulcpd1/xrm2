@@ -583,3 +583,34 @@ RU / Private / LAN -> Direct
 
 Everything else -> Agent (after transport integration).
 
+
+---
+
+## Current Runtime Status
+
+Completed:
+
+✔ Hysteria integration
+
+✔ Classifier -> Policy -> Dispatcher pipeline
+
+✔ Driver abstraction
+
+✔ StreamBridge
+
+✔ XRM transport protocol v1
+
+✔ XRM Agent
+
+✔ Agent outbound driver
+
+✔ Request header transmission
+
+Current state:
+
+Server and Agent can communicate using the XRM protocol.
+
+Next milestone:
+
+Run Agent as a standalone service on the VPS and redirect the "italy" route from the Nebula driver to the Agent driver.
+
