@@ -371,3 +371,42 @@ Outbound Driver
 At each stage we will verify actual runtime values instead of assuming they are correct.
 
 No new features until the decision chain is verified.
+
+---
+
+# New Priority
+
+Transport layer is COMPLETE.
+
+Next implementation target:
+
+Real Nebula outbound.
+
+Current situation:
+
+direct:
+    net.Dialer
+
+nebula:
+    net.Dialer   <-- temporary placeholder
+
+This means both drivers currently behave almost identically.
+
+Next objective:
+
+Implement a real Nebula transport so that routing decisions have an actual effect.
+
+After that:
+
+Classifier
+    ↓
+Policy
+    ↓
+Dispatcher
+    ↓
+Forwarder
+    ↓
+direct | nebula
+
+will produce different network paths.
+
