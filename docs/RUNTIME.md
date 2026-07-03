@@ -99,3 +99,36 @@ Not implemented yet:
 ## Next task
 
 Implement full UDP relay for Hysteria using the new UDP adapter.
+
+---
+
+# Next milestone
+
+DNS subsystem
+
+Goal:
+
+Request
+    ↓
+Classifier
+    ↓
+DNS Resolver
+    ↓
+Policy
+    ↓
+Dispatcher
+
+Resolver responsibilities:
+
+- DNS cache
+- static hosts
+- future DoH/DoT
+- domain -> IP
+- preserve original hostname for routing
+
+Current status:
+
+- Runtime: COMPLETE
+- Hysteria TCP: COMPLETE
+- Hysteria UDP: COMPLETE
+- Next: DNS
