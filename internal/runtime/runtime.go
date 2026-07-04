@@ -1,13 +1,20 @@
 package runtime
 
-import "fmt"
+import (
+	"github.com/soulcpd1/xrm2/internal/core"
+)
 
-type Runtime struct{}
+type Runtime struct {
+	core *core.Core
+}
 
 func New() *Runtime {
-	return &Runtime{}
+	return &Runtime{
+		core: core.New(),
+	}
 }
 
 func (r *Runtime) Run() error {
-	return fmt.Errorf("runtime not implemented")
+	_ = r.core
+	return nil
 }
