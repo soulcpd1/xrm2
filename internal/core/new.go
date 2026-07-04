@@ -47,16 +47,9 @@ func New() *Core {
 
 	stream := NewStreamBridge(forwarder)
 
-	// временные правила (MVP)
-	cls.Engine().Add(rules.DomainRule{
-		Domain: "supercell.com",
-		Class:  policy.Default,
-	})
-
-	cls.Engine().Add(rules.SuffixRule{
-		Suffix: ".ru",
-		Class:  policy.RU,
-	})
+	rules.Default().Apply(
+		cls.Engine(),
+	)
 
 	return &Core{
 		Sessions:   sessions,
