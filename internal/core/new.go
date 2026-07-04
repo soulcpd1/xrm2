@@ -47,7 +47,12 @@ func New() *Core {
 
 	stream := NewStreamBridge(forwarder)
 
-	rules.Default().Apply(
+	set, err := rules.Load("/etc/xrm/rules.yaml")
+	if err != nil {
+		panic(err)
+	}
+
+	set.Apply(
 		cls.Engine(),
 	)
 
