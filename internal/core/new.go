@@ -11,9 +11,10 @@ import (
 	"github.com/soulcpd1/xrm2/internal/session"
 )
 
-func New() *Core {
+func New(cls *classifier.Classifier) *Core {
 
 	sessions := session.New()
+
 	engine := policy.NewEngine()
 
 	resolver := dns.NewSystem()
@@ -37,8 +38,6 @@ func New() *Core {
 		routes,
 	)
 
-	cls := classifier.New()
-
 	forwarder := NewForwarder(
 		cls,
 		dispatcher,
@@ -47,14 +46,11 @@ func New() *Core {
 
 	stream := NewStreamBridge(forwarder)
 
-	set, err := rules.Load("/etc/xrm/rules.yaml")
+	set, err := rules.Load("configs/rules.yaml")
 	if err != nil {
 		panic(err)
 	}
-
-	set.Apply(
-		cls.Engine(),
-	)
+	cls.Engine().Replace(set.Rules)
 
 	return &Core{
 		Sessions:   sessions,

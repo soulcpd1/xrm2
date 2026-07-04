@@ -16,6 +16,10 @@ func (e *Engine) Add(r Rule) {
 	e.rules = append(e.rules, r)
 }
 
+func (e *Engine) Replace(rules []Rule) {
+	e.rules = append(e.rules[:0], rules...)
+}
+
 func (e *Engine) Match(addr string) policy.Category {
 
 	for _, r := range e.rules {
