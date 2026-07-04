@@ -5,6 +5,7 @@ import (
 	"net"
 
 	"github.com/soulcpd1/xrm2/internal/classifier"
+	"github.com/soulcpd1/xrm2/internal/common"
 	"github.com/soulcpd1/xrm2/internal/outbound"
 	"github.com/soulcpd1/xrm2/internal/routing"
 )
@@ -34,7 +35,20 @@ func (f *Forwarder) Dial(
 	address string,
 ) (net.Conn, error) {
 
-	d, err := f.Outbound.Driver(driver)
+	_ = driver
+
+	req := &common.Request{
+		Network: network,
+		Address: address,
+	}
+
+	f.Classifier.Resolve(req)
+
+	if err := f.Dispatcher.Resolve(req); err != nil {
+		return nil, err
+	}
+
+	d, err := f.Outbound.Driver(req.Route.Outbound)
 	if err != nil {
 		return nil, err
 	}
