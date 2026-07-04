@@ -993,3 +993,74 @@ hyserver.Config
         ↓
 hyserver.NewServer()
 
+
+---
+
+## 2026-07-04 — Runtime refactoring (commit 9007f32)
+
+### Completed
+
+- Official Hysteria runtime is now the primary runtime used by XRM.
+- Runtime successfully serves real clients through the integrated Hysteria core.
+- Android client successfully connects through XRM.
+- Traffic is forwarded through the remote VPS Agent.
+- External IP is confirmed to be the Italian VPS.
+- The official Hysteria daemon has been retired from the data path.
+- xrm-agent is now deployed as a persistent systemd service on the VPS.
+
+### Runtime architecture
+
+Current runtime pipeline:
+
+    Hysteria
+        ↓
+    StreamBridge
+        ↓
+    Forwarder
+        ↓
+    Outbound Manager
+        ↓
+    Driver (agent)
+
+### Refactoring
+
+Forwarder has been prepared for routing integration.
+
+Injected dependencies:
+
+- Classifier
+- Dispatcher
+- Outbound Manager
+
+Behavior is intentionally unchanged.
+
+No routing decisions are performed yet.
+
+This commit only prepares the architecture for the next stage.
+
+### Next milestone
+
+Move route selection into Forwarder.
+
+Target pipeline:
+
+    Hysteria
+        ↓
+    StreamBridge
+        ↓
+    Forwarder
+        ↓
+    Classifier
+        ↓
+    Dispatcher
+        ↓
+    Route
+        ↓
+    Outbound
+        ↓
+    Driver
+
+After this step Hysteria, Runtime and StreamBridge will no longer know anything about outbound drivers.
+
+Commit:
+9007f32
