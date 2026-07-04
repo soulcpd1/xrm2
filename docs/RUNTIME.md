@@ -1064,3 +1064,46 @@ After this step Hysteria, Runtime and StreamBridge will no longer know anything 
 
 Commit:
 9007f32
+
+---
+
+## 2026-07-04 — Routing enters the runtime (commit 6423b12)
+
+Forwarder is no longer using the caller-selected outbound.
+
+Connection flow is now:
+
+    Hysteria
+        ↓
+    StreamBridge
+        ↓
+    Forwarder
+        ↓
+    Classifier
+        ↓
+    Dispatcher
+        ↓
+    Route
+        ↓
+    Outbound
+        ↓
+    Driver
+
+Implemented:
+
+- Forwarder now creates a Request.
+- Request is classified.
+- Dispatcher resolves the route.
+- Route selects the outbound.
+- Outbound resolves the driver.
+- Driver performs the actual Dial().
+
+The "driver" argument is now ignored and exists only for backward compatibility.
+
+Next step:
+
+Remove the obsolete driver parameter completely and migrate all callers to the new API.
+
+Commit:
+6423b12
+
