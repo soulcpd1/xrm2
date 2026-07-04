@@ -16,10 +16,12 @@ func (m *Manager) Put(id string, s *Session) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
-	s.LastSeen = time.Now()
-
 	if s.CreatedAt.IsZero() {
 		s.CreatedAt = time.Now()
+	}
+
+	if s.LastSeen.IsZero() {
+		s.LastSeen = time.Now()
 	}
 
 	m.sessions[id] = s
