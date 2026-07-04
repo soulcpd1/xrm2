@@ -961,3 +961,35 @@ Agent integration is NOT the next task.
 
 The first goal is to replace the standalone hysteria process with the XRM runtime.
 
+
+---
+
+## Hysteria Core Integration Notes
+
+Research completed on github.com/apernet/hysteria/core/v2.
+
+Conclusions:
+
+- core/v2 is a transport library only.
+- It does NOT load YAML configuration.
+- It does NOT provide a server application.
+- It does NOT implement authentication.
+- The embedding application is responsible for:
+  - loading YAML;
+  - creating server.Config;
+  - implementing Authenticator;
+  - opening UDP listener;
+  - loading TLS certificates.
+
+Therefore XRM owns runtime construction while embedding the official Hysteria transport.
+
+Current integration chain:
+
+internal/hysteria.Config
+        ↓
+internal/hycore.BuildConfig()
+        ↓
+hyserver.Config
+        ↓
+hyserver.NewServer()
+
