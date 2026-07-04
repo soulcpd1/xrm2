@@ -42,10 +42,7 @@ func TestPipelineRouting(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		driver, err := c.Forwarder.SelectDriver(
-			context.Background(),
-			req,
-		)
+		driver, err := c.Forwarder.SelectDriver(req)
 		if err != nil {
 			t.Fatal(err)
 		}
