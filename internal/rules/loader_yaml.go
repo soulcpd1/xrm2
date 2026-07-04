@@ -45,10 +45,11 @@ func LoadFile(path string) (*Engine, error) {
 			})
 
 		case "cidr":
-			e.Add(NewCIDRRule(
-				r.Value,
-				cat,
-			))
+			rule, err := NewCIDRRule(r.Value, cat)
+			if err != nil {
+				return nil, err
+			}
+			e.Add(rule)
 
 		case "private":
 			e.Add(PrivateRule{
