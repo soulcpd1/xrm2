@@ -35,6 +35,10 @@ var hysteriaServeCmd = &cobra.Command{
 	Short: "Run XRM integrated Hysteria runtime",
 	Run: func(cmd *cobra.Command, args []string) {
 
-		fmt.Println("runtime not implemented yet")
+		rt := runtime.New()
+		if err := rt.Run(); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	},
 }
