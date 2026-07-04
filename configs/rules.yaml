@@ -1,0 +1,19 @@
+rules:
+  - type: private
+    policy: ru
+
+  - type: cidr
+    value: 100.64.0.0/10
+    policy: ru
+
+  - type: suffix
+    value: ".ru"
+    policy: ru
+
+  - type: keyword
+    value: "gosuslugi"
+    policy: ru
+
+  - type: domain
+    value: "supercell.com"
+    policy: default
