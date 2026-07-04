@@ -7,7 +7,6 @@ import (
 	"github.com/soulcpd1/xrm2/internal/classifier"
 	"github.com/soulcpd1/xrm2/internal/common"
 	"github.com/soulcpd1/xrm2/internal/outbound"
-	"github.com/soulcpd1/xrm2/internal/route"
 	"github.com/soulcpd1/xrm2/internal/routing"
 )
 
