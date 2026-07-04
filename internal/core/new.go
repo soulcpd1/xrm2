@@ -31,9 +31,6 @@ func New() *Core {
 
 	ob := outbound.Default()
 
-	forwarder := NewForwarder(ob)
-	stream := NewStreamBridge(forwarder)
-
 	dispatcher := routing.NewDispatcher(
 		sessions,
 		engine,
@@ -41,6 +38,14 @@ func New() *Core {
 	)
 
 	cls := classifier.New()
+
+	forwarder := NewForwarder(
+		cls,
+		dispatcher,
+		ob,
+	)
+
+	stream := NewStreamBridge(forwarder)
 
 	// временные правила (MVP)
 	cls.Engine().Add(rules.DomainRule{

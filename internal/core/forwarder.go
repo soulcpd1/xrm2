@@ -4,15 +4,27 @@ import (
 	"context"
 	"net"
 
+	"github.com/soulcpd1/xrm2/internal/classifier"
 	"github.com/soulcpd1/xrm2/internal/outbound"
+	"github.com/soulcpd1/xrm2/internal/routing"
 )
 
 type Forwarder struct {
-	Outbound *outbound.Manager
+	Classifier *classifier.Classifier
+	Dispatcher *routing.Dispatcher
+	Outbound   *outbound.Manager
 }
 
-func NewForwarder(ob *outbound.Manager) *Forwarder {
-	return &Forwarder{Outbound: ob}
+func NewForwarder(
+	cls *classifier.Classifier,
+	disp *routing.Dispatcher,
+	ob *outbound.Manager,
+) *Forwarder {
+	return &Forwarder{
+		Classifier: cls,
+		Dispatcher: disp,
+		Outbound:   ob,
+	}
 }
 
 func (f *Forwarder) Dial(
@@ -41,8 +53,5 @@ func (f *Forwarder) ListenPacket(
 		return nil, err
 	}
 
-	return d.ListenPacket(
-		ctx,
-		address,
-	)
+	return d.ListenPacket(ctx, address)
 }
