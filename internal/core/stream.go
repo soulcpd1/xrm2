@@ -16,13 +16,12 @@ func NewStreamBridge(f *Forwarder) *StreamBridge {
 
 func (b *StreamBridge) BridgeConn(
 	ctx context.Context,
-	driver string,
 	inbound net.Conn,
 	network string,
 	address string,
 ) error {
 
-	out, err := b.forwarder.Dial(ctx, driver, network, address)
+	out, err := b.forwarder.Dial(ctx, network, address)
 	if err != nil {
 		return err
 	}

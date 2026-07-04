@@ -30,12 +30,9 @@ func NewForwarder(
 
 func (f *Forwarder) Dial(
 	ctx context.Context,
-	driver string,
 	network string,
 	address string,
 ) (net.Conn, error) {
-
-	_ = driver
 
 	req := &common.Request{
 		Network: network,
