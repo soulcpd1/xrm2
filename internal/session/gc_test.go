@@ -22,7 +22,7 @@ func TestCleanup(t *testing.T) {
 		ID:        "dead",
 		Route:     &route.Route{Name: "italy"},
 		CreatedAt: time.Now().Add(-10 * time.Minute),
-		LastSeen:  time.Now().Add(-10 * time.Minute),
+		LastSeen:  time.Now().Add(-24 * time.Hour),
 	})
 
 	n := m.Cleanup()
