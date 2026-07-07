@@ -6,7 +6,7 @@ import (
 
 	"github.com/soulcpd1/xrm2/internal/core"
 	"github.com/soulcpd1/xrm2/internal/outbound"
-	"github.com/soulcpd1/xrm2/internal/policy"
+	"github.com/soulcpd1/xrm2/internal/router"
 	"github.com/soulcpd1/xrm2/internal/socks"
 )
 
@@ -18,7 +18,7 @@ type Runtime struct {
 
 func New() *Runtime {
 
-	pl := policy.New()
+	rt := router.New()
 
 	direct := outbound.NewDirectDriver()
 	vps := outbound.NewVPSDriver()
@@ -27,7 +27,7 @@ func New() *Runtime {
 
 	fw := core.NewForwarder(ob)
 
-	dp := core.NewDispatcher(fw, pl)
+	dp := core.NewDispatcher(fw, rt)
 
 	return &Runtime{
 		dispatcher: dp,

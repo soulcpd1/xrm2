@@ -4,19 +4,19 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/soulcpd1/xrm2/internal/policy"
+	"github.com/soulcpd1/xrm2/internal/router"
 	"github.com/soulcpd1/xrm2/internal/traffic"
 )
 
 type Dispatcher struct {
 	forwarder *Forwarder
-	policy    *policy.Engine
+	router    *router.Engine
 }
 
-func NewDispatcher(f *Forwarder, p *policy.Engine) *Dispatcher {
+func NewDispatcher(f *Forwarder, r *router.Engine) *Dispatcher {
 	return &Dispatcher{
 		forwarder: f,
-		policy:    p,
+		router:    r,
 	}
 }
 
@@ -28,14 +28,14 @@ func (d *Dispatcher) Handle(req *traffic.Request) (net.Conn, error) {
 	fmt.Printf("[TRACE] ip=%s\n", req.IP)
 	fmt.Printf("[TRACE] addr=%s\n", req.Address)
 
-	action := d.policy.Resolve(req)
+	action := d.router.Resolve(req)
 
 	decision := Decision{
 		Route:  Route(action),
-		Reason: "policy",
+		Reason: "router",
 	}
 
-	fmt.Printf("[TRACE] POLICY RESULT = %s\n", decision.Route)
+	fmt.Printf("[TRACE] DECISION = %s\n", decision.Route)
 
 	conn, err := d.forwarder.Dial(decision, req)
 
