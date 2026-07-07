@@ -17,17 +17,19 @@ func (s *Server) parseRequest(conn net.Conn) (*traffic.Request, error) {
 		return nil, err
 	}
 
-	// VER CMD RSV ATYP
 	if hdr[0] != 0x05 {
 		return nil, fmt.Errorf("invalid socks version")
 	}
 
-	// only CONNECT
 	if hdr[1] != 0x01 {
 		return nil, fmt.Errorf("unsupported command")
 	}
 
-	var host string
+	var (
+		host     string
+		domain   string
+		ipString string
+	)
 
 	switch hdr[3] {
 
@@ -39,7 +41,8 @@ func (s *Server) parseRequest(conn net.Conn) (*traffic.Request, error) {
 			return nil, err
 		}
 
-		host = net.IP(ip[:]).String()
+		ipString = net.IP(ip[:]).String()
+		host = ipString
 
 	case 0x03:
 
@@ -55,7 +58,8 @@ func (s *Server) parseRequest(conn net.Conn) (*traffic.Request, error) {
 			return nil, err
 		}
 
-		host = string(buf)
+		domain = string(buf)
+		host = domain
 
 	case 0x04:
 
@@ -65,10 +69,10 @@ func (s *Server) parseRequest(conn net.Conn) (*traffic.Request, error) {
 			return nil, err
 		}
 
-		host = net.IP(ip[:]).String()
+		ipString = net.IP(ip[:]).String()
+		host = ipString
 
 	default:
-
 		return nil, fmt.Errorf("unsupported atyp")
 	}
 
@@ -80,11 +84,10 @@ func (s *Server) parseRequest(conn net.Conn) (*traffic.Request, error) {
 
 	port := binary.BigEndian.Uint16(portbuf[:])
 
-	req := &traffic.Request{
+	return &traffic.Request{
 		Network: "tcp",
-		Domain:  host,
+		Domain:  domain,
+		IP:      ipString,
 		Address: fmt.Sprintf("%s:%d", host, port),
-	}
-
-	return req, nil
+	}, nil
 }
