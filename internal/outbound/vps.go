@@ -3,16 +3,26 @@ package outbound
 import (
 	"context"
 	"net"
+	"os"
 	"time"
 )
+
+const defaultAgentAddress = "192.168.100.1:7000"
 
 type VPSDriver struct {
 	agent *Agent
 }
 
 func NewVPSDriver() VPSDriver {
+
+	addr := os.Getenv("XRM_AGENT")
+
+	if addr == "" {
+		addr = defaultAgentAddress
+	}
+
 	return VPSDriver{
-		agent: NewAgent("192.168.100.1:7000"),
+		agent: NewAgent(addr),
 	}
 }
 
