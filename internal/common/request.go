@@ -1,25 +1,17 @@
 package common
 
-import (
-	"net"
+import "net"
 
-	"github.com/soulcpd1/xrm2/internal/policy"
-	"github.com/soulcpd1/xrm2/internal/route"
-)
-
+// Request is unified traffic envelope for ALL protocols
 type Request struct {
-	SessionID string
-
-	Conn net.Conn
-
 	Network string
-
-	Host string
-	Port string
-
 	Address string
+	Domain  string
+	IP      string
 
-	Category policy.Category
+	// Protocol source (hysteria / tuic / anyconnect / future)
+	Protocol string
 
-	Route *route.Route
+	// Raw connection (IMPORTANT: used by forwarder)
+	Conn net.Conn
 }

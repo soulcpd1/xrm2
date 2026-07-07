@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/soulcpd1/xrm2/internal/tuic"
 	"github.com/spf13/cobra"
 )
 

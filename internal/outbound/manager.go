@@ -1,33 +1,33 @@
 package outbound
 
-import "fmt"
+import (
+	"fmt"
+	"net"
+)
 
 type Manager struct {
-	drivers map[string]Driver
+	direct DirectDriver
+	vps    VPSDriver
 }
 
-func New() *Manager {
+func NewManager(d DirectDriver, v VPSDriver) *Manager {
 	return &Manager{
-		drivers: make(map[string]Driver),
+		direct: d,
+		vps:    v,
 	}
 }
 
-func (m *Manager) Register(d Driver) {
-	m.drivers[d.Name()] = d
-}
+func (m *Manager) Dial(tag, network, addr string) (net.Conn, error) {
 
-func (m *Manager) Driver(name string) (Driver, error) {
-	d, ok := m.drivers[name]
-	if !ok {
-		return nil, fmt.Errorf("driver %s not found", name)
-	}
-	return d, nil
-}
+	switch tag {
 
-func (m *Manager) Names() []string {
-	names := make([]string, 0, len(m.drivers))
-	for name := range m.drivers {
-		names = append(names, name)
+	case "direct":
+		return m.direct.Dial(network, addr)
+
+	case "vps":
+		return m.vps.Dial(network, addr)
+
+	default:
+		return nil, fmt.Errorf("unknown outbound tag: %s", tag)
 	}
-	return names
 }

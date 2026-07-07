@@ -1,75 +1,34 @@
 package core
 
 import (
-	"context"
+	"fmt"
 	"net"
 
-	"github.com/soulcpd1/xrm2/internal/classifier"
-	"github.com/soulcpd1/xrm2/internal/common"
 	"github.com/soulcpd1/xrm2/internal/outbound"
-	"github.com/soulcpd1/xrm2/internal/routing"
+	"github.com/soulcpd1/xrm2/internal/policy"
+	"github.com/soulcpd1/xrm2/internal/traffic"
 )
 
 type Forwarder struct {
-	Classifier *classifier.Classifier
-	Dispatcher *routing.Dispatcher
-	Outbound   *outbound.Manager
+	policy *policy.Engine
+	ob     *outbound.Manager
 }
 
-func NewForwarder(
-	cls *classifier.Classifier,
-	disp *routing.Dispatcher,
-	ob *outbound.Manager,
-) *Forwarder {
-	return &Forwarder{
-		Classifier: cls,
-		Dispatcher: disp,
-		Outbound:   ob,
-	}
+func NewForwarder(p *policy.Engine, ob *outbound.Manager) *Forwarder {
+	return &Forwarder{policy: p, ob: ob}
 }
 
-func (f *Forwarder) SelectDriver(
-	req *common.Request,
-) (outbound.Driver, error) {
+func (f *Forwarder) Dial(req *traffic.Request) (net.Conn, error) {
 
-	return f.Outbound.Driver(req.Route.Outbound)
-}
+	action := f.policy.Resolve(req)
 
-func (f *Forwarder) Dial(
-	ctx context.Context,
-	network string,
-	address string,
-) (net.Conn, error) {
+	fmt.Printf("[FORWARDER] action=%s host=%s\n", action, req.Address)
 
-	req := &common.Request{
-		Network: network,
-		Address: address,
-	}
+	conn, err := f.ob.Dial(string(action), req.Network, req.Address)
 
-	f.Classifier.Resolve(req)
-
-	if err := f.Dispatcher.Resolve(req); err != nil {
-		return nil, err
-	}
-
-	d, err := f.Outbound.Driver(req.Route.Outbound)
 	if err != nil {
-		return nil, err
+		fmt.Printf("[FORWARDER] ERROR: %v\n", err)
 	}
 
-	return d.Dial(ctx, network, address)
-}
-
-func (f *Forwarder) ListenPacket(
-	ctx context.Context,
-	driver string,
-	address string,
-) (net.PacketConn, error) {
-
-	d, err := f.Outbound.Driver(driver)
-	if err != nil {
-		return nil, err
-	}
-
-	return d.ListenPacket(ctx, address)
+	return conn, err
 }

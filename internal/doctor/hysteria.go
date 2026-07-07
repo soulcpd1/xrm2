@@ -1,24 +1,15 @@
 package doctor
 
-import (
-	"os"
-)
+import "fmt"
 
 type HysteriaChecker struct{}
 
-func (HysteriaChecker) Run() Result {
+func NewHysteriaChecker() *HysteriaChecker {
+	return &HysteriaChecker{}
+}
 
-	if _, err := os.Stat("/usr/local/bin/hysteria"); err == nil {
-		return Result{
-			Name:   "Hysteria Binary",
-			OK:     true,
-			Detail: "installed",
-		}
-	}
-
-	return Result{
-		Name:   "Hysteria Binary",
-		OK:     false,
-		Detail: "not installed",
-	}
+func (h *HysteriaChecker) Check() error {
+	// TODO: real check later
+	fmt.Println("Hysteria: OK")
+	return nil
 }

@@ -1,38 +1,18 @@
 package cli
 
 import (
-	"github.com/soulcpd1/xrm2/internal/doctor"
-	"github.com/spf13/cobra"
+	"fmt"
+	"github.com/soulcpd1/xrm2/internal/core"
 )
 
-var rootCmd = &cobra.Command{
-	Use:   "xrm",
-	Short: "XRM2 VPN Manager",
-}
+func Run() {
+	engine := core.NewEngine()
 
-var doctorCmd = &cobra.Command{
-	Use:   "doctor",
-	Short: "Run diagnostics",
-	Run: func(cmd *cobra.Command, args []string) {
+	req := core.Request{
+		Address: "rebus.rustore.ru",
+	}
 
-		results := []doctor.Result{
-			doctor.KernelChecker{}.Run(),
-			doctor.XrayChecker{}.Run(),
-			doctor.ServiceChecker{}.Run(),
-			doctor.ListenerChecker{}.Run(),
-		}
+	dec := engine.Resolve(req)
 
-		doctor.Print(results)
-	},
-}
-
-func init() {
-	rootCmd.AddCommand(doctorCmd)
-	rootCmd.AddCommand(clientCmd)
-	rootCmd.AddCommand(hysteriaCmd)
-	rootCmd.AddCommand(tuicCmd)
-}
-
-func Execute() error {
-	return rootCmd.Execute()
+	fmt.Println("ROUTE:", dec.Route, dec.Reason)
 }

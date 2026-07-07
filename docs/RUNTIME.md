@@ -1107,3 +1107,15 @@ Remove the obsolete driver parameter completely and migrate all callers to the n
 Commit:
 6423b12
 
+
+## TEMP FILES (REMOVE AFTER STABILIZATION)
+
+These files are temporary debugging tools and MUST be deleted later:
+
+- cmd/xrm/test_main.go
+- internal/core/test_forward.go
+
+Purpose:
+- validate forwarder → router flow
+- isolate routing logic from outbound/inbound systems
+

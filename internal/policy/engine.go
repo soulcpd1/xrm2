@@ -1,20 +1,33 @@
 package policy
 
-import "github.com/soulcpd1/xrm2/internal/route"
+import (
+	"strings"
+
+	"github.com/soulcpd1/xrm2/internal/router"
+	"github.com/soulcpd1/xrm2/internal/traffic"
+)
 
 type Engine struct{}
 
-func NewEngine() *Engine {
+func New() *Engine {
 	return &Engine{}
 }
 
-func (e *Engine) Resolve(cat Category) Decision {
-	switch cat {
-	case "ru":
-		return Decision{Route: route.Name("italy")}
-	case "default":
-		return Decision{Route: route.Name("direct")}
-	default:
-		return Decision{Route: route.Name("home")}
+func (p *Engine) Resolve(req *traffic.Request) router.Action {
+
+	// SAFETY: ensure fields exist
+	domain := strings.ToLower(req.Domain)
+	ip := req.IP
+
+	// DIRECT RULES FIRST (IMPORTANT)
+	if ip == "127.0.0.1" || strings.HasPrefix(ip, "192.168.") {
+		return router.Direct
 	}
+
+	if strings.HasSuffix(domain, ".ru") {
+		return router.Direct
+	}
+
+	// DEFAULT
+	return router.VPS
 }
