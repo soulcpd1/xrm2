@@ -22,20 +22,22 @@ func NewDispatcher(f *Forwarder, p *policy.Engine) *Dispatcher {
 
 func (d *Dispatcher) Handle(req *traffic.Request) (net.Conn, error) {
 
-	// 🔥 STEP 1: inbound dump
 	fmt.Printf("\n[TRACE] ===== INBOUND =====\n")
 	fmt.Printf("[TRACE] proto=%s\n", req.Protocol)
 	fmt.Printf("[TRACE] domain=%s\n", req.Domain)
 	fmt.Printf("[TRACE] ip=%s\n", req.IP)
 	fmt.Printf("[TRACE] addr=%s\n", req.Address)
 
-	// 🔥 STEP 2: policy decision
 	action := d.policy.Resolve(req)
 
-	fmt.Printf("[TRACE] POLICY RESULT = %s\n", action)
+	decision := Decision{
+		Route:  Route(action),
+		Reason: "policy",
+	}
 
-	// 🔥 STEP 3: outbound execution
-	conn, err := d.forwarder.Dial(req)
+	fmt.Printf("[TRACE] POLICY RESULT = %s\n", decision.Route)
+
+	conn, err := d.forwarder.Dial(decision, req)
 
 	if err != nil {
 		fmt.Printf("[TRACE] ERROR: %v\n", err)

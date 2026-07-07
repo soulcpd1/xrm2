@@ -25,7 +25,7 @@ func New() *Runtime {
 
 	ob := outbound.NewManager(direct, vps)
 
-	fw := core.NewForwarder(pl, ob)
+	fw := core.NewForwarder(ob)
 
 	dp := core.NewDispatcher(fw, pl)
 
