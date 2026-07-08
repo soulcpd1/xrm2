@@ -1,10 +1,12 @@
 package core
 
 import (
+	"errors"
 	"fmt"
 	"net"
 
 	"github.com/soulcpd1/xrm2/internal/outbound"
+	"github.com/soulcpd1/xrm2/internal/router"
 	"github.com/soulcpd1/xrm2/internal/traffic"
 )
 
@@ -30,6 +32,11 @@ func (f *Forwarder) Dial(
 		tag,
 		req.Address,
 	)
+
+	if decision.Route == Route(router.Block) {
+		fmt.Printf("[FORWARDER] BLOCKED %s\n", req.Address)
+		return nil, errors.New("blocked by router")
+	}
 
 	conn, err := f.ob.Dial(
 		tag,

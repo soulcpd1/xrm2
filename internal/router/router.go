@@ -1,6 +1,7 @@
 package router
 
 import (
+	"net/netip"
 	"strings"
 
 	"github.com/soulcpd1/xrm2/internal/traffic"
@@ -19,7 +20,7 @@ func New() *Engine {
 
 	if err == nil {
 
-		rules = make([]Rule, 0, len(loaded))
+		rules = make([]Rule, 0, len(loaded)+len(LocalRules))
 
 		for _, r := range loaded {
 
@@ -31,6 +32,7 @@ func New() *Engine {
 			switch r.Type {
 
 			case xrayconfig.DomainRule:
+
 				rules = append(rules, Rule{
 					Type:   DomainRule,
 					Value:  r.Value,
@@ -38,6 +40,7 @@ func New() *Engine {
 				})
 
 			case xrayconfig.CIDRRule:
+
 				rules = append(rules, Rule{
 					Type:   CIDRRule,
 					Value:  r.Value,
@@ -47,6 +50,8 @@ func New() *Engine {
 		}
 	}
 
+	rules = append(rules, LocalRules...)
+
 	return &Engine{
 		rules: rules,
 	}
@@ -55,7 +60,18 @@ func New() *Engine {
 func (e *Engine) Resolve(req *traffic.Request) Action {
 
 	domain := strings.ToLower(req.Domain)
-	ip := req.IP
+
+	var ip netip.Addr
+	hasIP := false
+
+	if req.IP != "" {
+
+		addr, err := netip.ParseAddr(req.IP)
+		if err == nil {
+			ip = addr
+			hasIP = true
+		}
+	}
 
 	for _, rule := range e.rules {
 
@@ -63,9 +79,12 @@ func (e *Engine) Resolve(req *traffic.Request) Action {
 
 		case CIDRRule:
 
-			if strings.HasPrefix(ip, "127.") &&
-				rule.Value == "127.0.0.0/8" {
-				return rule.Action
+			if hasIP {
+
+				prefix, err := netip.ParsePrefix(rule.Value)
+				if err == nil && prefix.Contains(ip) {
+					return rule.Action
+				}
 			}
 
 		case DomainRule:

@@ -25,11 +25,7 @@ func (s *Server) parseRequest(conn net.Conn) (*traffic.Request, error) {
 		return nil, fmt.Errorf("unsupported command")
 	}
 
-	var (
-		host     string
-		domain   string
-		ipString string
-	)
+	var host string
 
 	switch hdr[3] {
 
@@ -41,8 +37,7 @@ func (s *Server) parseRequest(conn net.Conn) (*traffic.Request, error) {
 			return nil, err
 		}
 
-		ipString = net.IP(ip[:]).String()
-		host = ipString
+		host = net.IP(ip[:]).String()
 
 	case 0x03:
 
@@ -58,8 +53,7 @@ func (s *Server) parseRequest(conn net.Conn) (*traffic.Request, error) {
 			return nil, err
 		}
 
-		domain = string(buf)
-		host = domain
+		host = string(buf)
 
 	case 0x04:
 
@@ -69,8 +63,7 @@ func (s *Server) parseRequest(conn net.Conn) (*traffic.Request, error) {
 			return nil, err
 		}
 
-		ipString = net.IP(ip[:]).String()
-		host = ipString
+		host = net.IP(ip[:]).String()
 
 	default:
 		return nil, fmt.Errorf("unsupported atyp")
@@ -84,10 +77,23 @@ func (s *Server) parseRequest(conn net.Conn) (*traffic.Request, error) {
 
 	port := binary.BigEndian.Uint16(portbuf[:])
 
-	return &traffic.Request{
+	req := &traffic.Request{
 		Network: "tcp",
-		Domain:  domain,
-		IP:      ipString,
+		Domain:  host,
 		Address: fmt.Sprintf("%s:%d", host, port),
-	}, nil
+	}
+
+	if ip := net.ParseIP(host); ip != nil {
+
+		req.IP = ip.String()
+
+	} else {
+
+		ips, err := net.LookupIP(host)
+		if err == nil && len(ips) > 0 {
+			req.IP = ips[0].String()
+		}
+	}
+
+	return req, nil
 }
