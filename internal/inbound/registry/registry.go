@@ -9,25 +9,24 @@ import (
 	"github.com/soulcpd1/xrm2/internal/inbound/tuic"
 )
 
-// Registry is control-plane for all inbound protocols
 type Registry struct {
-	forwarder *core.Forwarder
+	dispatcher *core.Dispatcher
 
 	hysteria   *hysteria.Handler
 	tuic       *tuic.Handler
 	anyconnect *anyconnect.Handler
 }
 
-func New(f *core.Forwarder) *Registry {
+func New(d *core.Dispatcher) *Registry {
 	return &Registry{
-		forwarder: f,
+		dispatcher: d,
 	}
 }
 
 func (r *Registry) Init() {
-	r.hysteria = hysteria.New(r.forwarder)
-	r.tuic = tuic.New(r.forwarder)
-	r.anyconnect = anyconnect.New(r.forwarder)
+	r.hysteria = hysteria.New(r.dispatcher)
+	r.tuic = tuic.New(r.dispatcher)
+	r.anyconnect = anyconnect.New(r.dispatcher)
 }
 
 func (r *Registry) Start() error {

@@ -7,6 +7,7 @@ import (
 )
 
 func (s *Server) handle(client net.Conn) {
+
 	defer client.Close()
 
 	if err := s.handshake(client); err != nil {
@@ -14,18 +15,38 @@ func (s *Server) handle(client net.Conn) {
 		return
 	}
 
-	req, err := s.parseRequest(client)
+	cmd, req, err := s.parseRequest(client)
 	if err != nil {
 		log.Println("[SOCKS] request:", err)
 		return
 	}
 
-	log.Printf(
-		"[SOCKS] CONNECT network=%s host=%s address=%s",
-		req.Network,
-		req.Domain,
-		req.Address,
-	)
+	switch cmd {
+
+	case 0x03:
+
+		log.Println("[SOCKS] UDP ASSOCIATE")
+
+		if err := s.handleUDPAssociate(client); err != nil {
+			log.Println("[SOCKS] udp:", err)
+		}
+
+		return
+
+	case 0x01:
+
+		log.Printf(
+			"[SOCKS] CONNECT network=%s host=%s address=%s",
+			req.Network,
+			req.Domain,
+			req.Address,
+		)
+
+	default:
+
+		log.Printf("[SOCKS] unknown cmd=0x%02x", cmd)
+		return
+	}
 
 	remote, err := s.Dispatcher.Handle(req)
 	if err != nil {
@@ -39,8 +60,8 @@ func (s *Server) handle(client net.Conn) {
 		0x00,
 		0x00,
 		0x01,
-		0x00, 0x00, 0x00, 0x00,
-		0x00, 0x00,
+		0, 0, 0, 0,
+		0, 0,
 	})
 	if err != nil {
 		return

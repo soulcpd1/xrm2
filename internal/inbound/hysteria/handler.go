@@ -1,23 +1,39 @@
 package hysteria
 
 import (
+	"io"
+	"log"
 	"net"
 
 	"github.com/soulcpd1/xrm2/internal/core"
 )
 
 type Handler struct {
-	forwarder *core.Forwarder
+	dispatcher *core.Dispatcher
 }
 
-func New(f *core.Forwarder) *Handler {
-	return &Handler{forwarder: f}
+func New(d *core.Dispatcher) *Handler {
+	return &Handler{
+		dispatcher: d,
+	}
 }
 
-// REAL ENTRYPOINT
 func (h *Handler) Serve(conn net.Conn) {
+	defer conn.Close()
 
 	req := core.ToRequest(conn)
 
-	h.forwarder.Dial(req)
+	remote, err := h.dispatcher.Handle(req)
+	if err != nil {
+		log.Println("[HYSTERIA] dispatch:", err)
+		return
+	}
+	defer remote.Close()
+
+	log.Println("[HYSTERIA] relay started")
+
+	go io.Copy(remote, conn)
+	io.Copy(conn, remote)
+
+	log.Println("[HYSTERIA] relay finished")
 }

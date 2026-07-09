@@ -20,7 +20,7 @@ func New() *Engine {
 
 	if err == nil {
 
-		rules = make([]Rule, 0, len(loaded)+len(LocalRules))
+		rules = make([]Rule, 0, len(loaded)+len(ExtraRules))
 
 		for _, r := range loaded {
 
@@ -48,9 +48,9 @@ func New() *Engine {
 				})
 			}
 		}
-	}
 
-	rules = append(rules, LocalRules...)
+		rules = append(rules, ExtraRules...)
+	}
 
 	return &Engine{
 		rules: rules,
@@ -61,12 +61,23 @@ func (e *Engine) Resolve(req *traffic.Request) Action {
 
 	domain := strings.ToLower(req.Domain)
 
-	var ip netip.Addr
-	hasIP := false
+	ipString := req.IP
 
-	if req.IP != "" {
+	if ipString == "" {
+		if _, err := netip.ParseAddr(domain); err == nil {
+			ipString = domain
+		}
+	}
 
-		addr, err := netip.ParseAddr(req.IP)
+	var (
+		ip    netip.Addr
+		hasIP bool
+	)
+
+	if ipString != "" {
+
+		addr, err := netip.ParseAddr(ipString)
+
 		if err == nil {
 			ip = addr
 			hasIP = true
@@ -82,6 +93,7 @@ func (e *Engine) Resolve(req *traffic.Request) Action {
 			if hasIP {
 
 				prefix, err := netip.ParsePrefix(rule.Value)
+
 				if err == nil && prefix.Contains(ip) {
 					return rule.Action
 				}
