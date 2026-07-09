@@ -50,6 +50,7 @@ func New() *Engine {
 		}
 
 		rules = append(rules, ExtraRules...)
+                rules = append(rules, LocalRules...)
 	}
 
 	return &Engine{
