@@ -13,10 +13,4 @@ var LocalRules = []Rule{
                 Value:  "domain:oneme.ru",
                 Action: Block,
         },
-
-        {
-                Type:   DomainRule,
-                Value:  "domain:okcdn.ru",
-                Action: Block,
-        },
 }
