@@ -16,32 +16,37 @@ var LocalRules = []Rule{
 
         {
                 Type:   DomainRule,
-                Value:  "domain:chatgpt.com",
+                Value:  "domain:whatsapp.com",
                 Action: VPS,
         },
         {
                 Type:   DomainRule,
-                Value:  "domain:openai.com",
+                Value:  "domain:whatsapp.net",
                 Action: VPS,
         },
         {
                 Type:   DomainRule,
-                Value:  "domain:oaistatic.com",
+                Value:  "domain:signal.org",
                 Action: VPS,
         },
         {
                 Type:   DomainRule,
-                Value:  "domain:oaiusercontent.com",
+                Value:  "domain:whispersystems.org",
                 Action: VPS,
         },
         {
                 Type:   DomainRule,
-                Value:  "domain:claude.ai",
+                Value:  "domain:fbcdn.net",
                 Action: VPS,
         },
         {
                 Type:   DomainRule,
-                Value:  "domain:anthropic.com",
+                Value:  "domain:cdninstagram.com",
+                Action: VPS,
+        },
+        {
+                Type:   DomainRule,
+                Value:  "domain:fbsbx.com",
                 Action: VPS,
         },
 }
