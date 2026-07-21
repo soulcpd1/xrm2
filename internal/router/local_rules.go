@@ -16,37 +16,27 @@ var LocalRules = []Rule{
 
         {
                 Type:   DomainRule,
-                Value:  "domain:whatsapp.com",
+                Value:  "domain:youtube.com",
                 Action: VPS,
         },
         {
                 Type:   DomainRule,
-                Value:  "domain:whatsapp.net",
+                Value:  "domain:youtu.be",
                 Action: VPS,
         },
         {
                 Type:   DomainRule,
-                Value:  "domain:signal.org",
+                Value:  "domain:googlevideo.com",
                 Action: VPS,
         },
         {
                 Type:   DomainRule,
-                Value:  "domain:whispersystems.org",
+                Value:  "domain:ytimg.com",
                 Action: VPS,
         },
         {
                 Type:   DomainRule,
-                Value:  "domain:fbcdn.net",
-                Action: VPS,
-        },
-        {
-                Type:   DomainRule,
-                Value:  "domain:cdninstagram.com",
-                Action: VPS,
-        },
-        {
-                Type:   DomainRule,
-                Value:  "domain:fbsbx.com",
+                Value:  "domain:youtubei.googleapis.com",
                 Action: VPS,
         },
 }
