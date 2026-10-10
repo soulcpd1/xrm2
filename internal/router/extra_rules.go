@@ -44,7 +44,6 @@ var ExtraRules = []Rule{
         {Type: CIDRRule, Value: "95.140.132.0/24", Action: VPS},
         {Type: CIDRRule, Value: "87.250.250.0/23", Action: VPS},
         {Type: CIDRRule, Value: "194.221.250.0/24", Action: VPS},
-        {Type: CIDRRule, Value: "178.130.128.0/17", Action: VPS},
         {Type: CIDRRule, Value: "40.104.0.0/15", Action: VPS},
         {Type: CIDRRule, Value: "185.73.192.0/18", Action: VPS},
         {Type: CIDRRule, Value: "79.133.128.0/17", Action: VPS},
@@ -66,4 +65,8 @@ var ExtraRules = []Rule{
         {Type: CIDRRule, Value: "17.242.0.0/16", Action: VPS},
         {Type: CIDRRule, Value: "104.166.180.0/24", Action: VPS},
         {Type: CIDRRule, Value: "172.64.0.0/13", Action: VPS},
+        {Type: CIDRRule, Value: "94.29.47.133/32", Action: Direct},
+        {Type: CIDRRule, Value: "2a03:2880::/32", Action: VPS},
+        {Type: CIDRRule, Value: "2a03:2887::/32", Action: VPS},
+        {Type: CIDRRule, Value: "2620:10d::/32", Action: VPS},
 }
