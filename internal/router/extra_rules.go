@@ -2480,4 +2480,12 @@ var ExtraRules = []Rule{
 	{Type: CIDRRule, Value: "99.83.105.0/24", Action: VPS},
 	{Type: CIDRRule, Value: "99.83.106.0/24", Action: VPS},
 	{Type: CIDRRule, Value: "99.87.32.0/22", Action: VPS},
+
+        // AWS Global Accelerator (Meta/WhatsApp медиа)
+        {Type: CIDRRule, Value: "15.197.0.0/16", Action: VPS},
+        {Type: CIDRRule, Value: "3.33.0.0/16", Action: VPS},
+        {Type: CIDRRule, Value: "99.83.0.0/16", Action: VPS},
+        {Type: CIDRRule, Value: "99.82.0.0/16", Action: VPS},
+        {Type: CIDRRule, Value: "75.2.0.0/17", Action: VPS},
+        {Type: CIDRRule, Value: "76.223.0.0/17", Action: VPS},
 }

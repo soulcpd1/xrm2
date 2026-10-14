@@ -61,4 +61,18 @@ var LocalRules = []Rule{
 	{Type: DomainRule, Value: "domain:blomberg.com", Action: VPS},
 	{Type: DomainRule, Value: "domain:execute-api.us-east-1.amazonaws.com", Action: VPS},
 	{Type: DomainRule, Value: "domain:execute-api.eu-west-1.amazonaws.com", Action: VPS},
+
+        // WhatsApp / Meta CDN (медиа)
+        {Type: DomainRule, Value: "domain:whatsapp.net", Action: VPS},
+        {Type: DomainRule, Value: "domain:whatsapp.com", Action: VPS},
+        {Type: DomainRule, Value: "domain:cdn.whatsapp.net", Action: VPS},
+        {Type: DomainRule, Value: "domain:mmg.whatsapp.net", Action: VPS},
+        {Type: DomainRule, Value: "domain:media.whatsapp.net", Action: VPS},
+        {Type: DomainRule, Value: "domain:chat-fallback.cdn.whatsapp.net", Action: VPS},
+        {Type: DomainRule, Value: "domain:g.whatsapp.net", Action: VPS},
+        {Type: DomainRule, Value: "domain:v.whatsapp.net", Action: VPS},
+        {Type: DomainRule, Value: "domain:static.whatsapp.net", Action: VPS},
+        {Type: DomainRule, Value: "domain:pps.whatsapp.net", Action: VPS},
+        {Type: DomainRule, Value: "domain:graph.whatsapp.com", Action: VPS},
+        {Type: DomainRule, Value: "domain:graph.whatsapp.net", Action: VPS},
 }
