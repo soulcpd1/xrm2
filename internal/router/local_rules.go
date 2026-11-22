@@ -25,19 +25,7 @@ var LocalRules = []Rule{
 	{Type: DomainRule, Value: "domain:goo.gl", Action: VPS},
 	{Type: DomainRule, Value: "domain:withgoogle.com", Action: VPS},
 
-	// HomeWhiz (Beko/Grundig/Arcelik/Blomberg)
-	{Type: DomainRule, Value: "domain:homewhiz.com", Action: VPS},
-	{Type: DomainRule, Value: "domain:api.homewhiz.com", Action: VPS},
-	{Type: DomainRule, Value: "domain:aws.homewhiz.com", Action: VPS},
-	{Type: DomainRule, Value: "domain:beko.com", Action: VPS},
-	{Type: DomainRule, Value: "domain:api.beko.com", Action: VPS},
-	{Type: DomainRule, Value: "domain:grundig.com", Action: VPS},
-	{Type: DomainRule, Value: "domain:arcelik.com", Action: VPS},
-	{Type: DomainRule, Value: "domain:blomberg.com", Action: VPS},
-	{Type: DomainRule, Value: "domain:homewhiz.net", Action: VPS},
-	{Type: DomainRule, Value: "domain:homewhiz.io", Action: VPS},
-
-	// HomeWhiz (Beko/Grundig/Arcelik/Blomberg)
+	// HomeWhiz / Arcelik IoT (Beko/Grundig/Arcelik/Blomberg)
 	{Type: DomainRule, Value: "domain:homewhiz.com", Action: VPS},
 	{Type: DomainRule, Value: "domain:api.homewhiz.com", Action: VPS},
 	{Type: DomainRule, Value: "domain:aws.homewhiz.com", Action: VPS},
@@ -48,34 +36,28 @@ var LocalRules = []Rule{
 	{Type: DomainRule, Value: "domain:grundig.com", Action: VPS},
 	{Type: DomainRule, Value: "domain:arcelik.com", Action: VPS},
 	{Type: DomainRule, Value: "domain:blomberg.com", Action: VPS},
-
-	// HomeWhiz / Arcelik IoT
 	{Type: DomainRule, Value: "domain:arcelikiot.com", Action: VPS},
 	{Type: DomainRule, Value: "domain:api.arcelikiot.com", Action: VPS},
 	{Type: DomainRule, Value: "domain:globalconfig.arcelikiot.com", Action: VPS},
-	{Type: DomainRule, Value: "domain:homewhiz.com", Action: VPS},
-	{Type: DomainRule, Value: "domain:homewhiz.net", Action: VPS},
-	{Type: DomainRule, Value: "domain:beko.com", Action: VPS},
-	{Type: DomainRule, Value: "domain:grundig.com", Action: VPS},
-	{Type: DomainRule, Value: "domain:arcelik.com", Action: VPS},
-	{Type: DomainRule, Value: "domain:blomberg.com", Action: VPS},
 	{Type: DomainRule, Value: "domain:execute-api.us-east-1.amazonaws.com", Action: VPS},
 	{Type: DomainRule, Value: "domain:execute-api.eu-west-1.amazonaws.com", Action: VPS},
 
-        // WhatsApp / Meta CDN (медиа)
-        {Type: DomainRule, Value: "domain:whatsapp.net", Action: VPS},
-        {Type: DomainRule, Value: "domain:whatsapp.com", Action: VPS},
-        {Type: DomainRule, Value: "domain:cdn.whatsapp.net", Action: VPS},
-        {Type: DomainRule, Value: "domain:mmg.whatsapp.net", Action: VPS},
-        {Type: DomainRule, Value: "domain:media.whatsapp.net", Action: VPS},
-        {Type: DomainRule, Value: "domain:chat-fallback.cdn.whatsapp.net", Action: VPS},
-        {Type: DomainRule, Value: "domain:g.whatsapp.net", Action: VPS},
-        {Type: DomainRule, Value: "domain:v.whatsapp.net", Action: VPS},
-        {Type: DomainRule, Value: "domain:static.whatsapp.net", Action: VPS},
-        {Type: DomainRule, Value: "domain:pps.whatsapp.net", Action: VPS},
-        {Type: DomainRule, Value: "domain:graph.whatsapp.com", Action: VPS},
-        {Type: DomainRule, Value: "domain:graph.whatsapp.net", Action: VPS},
-        {Type: DomainRule, Value: "domain:build.nvidia.com", Action: VPS},
-        {Type: DomainRule, Value: "domain:api.nvcf.nvidia.com", Action: VPS},
-        {Type: DomainRule, Value: "domain:integrate.api.nvidia.com", Action: VPS},
+	// WhatsApp / Meta CDN (медиа)
+	{Type: DomainRule, Value: "domain:whatsapp.net", Action: VPS},
+	{Type: DomainRule, Value: "domain:whatsapp.com", Action: VPS},
+	{Type: DomainRule, Value: "domain:cdn.whatsapp.net", Action: VPS},
+	{Type: DomainRule, Value: "domain:mmg.whatsapp.net", Action: VPS},
+	{Type: DomainRule, Value: "domain:media.whatsapp.net", Action: VPS},
+	{Type: DomainRule, Value: "domain:chat-fallback.cdn.whatsapp.net", Action: VPS},
+	{Type: DomainRule, Value: "domain:g.whatsapp.net", Action: VPS},
+	{Type: DomainRule, Value: "domain:v.whatsapp.net", Action: VPS},
+	{Type: DomainRule, Value: "domain:static.whatsapp.net", Action: VPS},
+	{Type: DomainRule, Value: "domain:pps.whatsapp.net", Action: VPS},
+	{Type: DomainRule, Value: "domain:graph.whatsapp.com", Action: VPS},
+	{Type: DomainRule, Value: "domain:graph.whatsapp.net", Action: VPS},
+
+	// NVIDIA
+	{Type: DomainRule, Value: "domain:build.nvidia.com", Action: VPS},
+	{Type: DomainRule, Value: "domain:api.nvcf.nvidia.com", Action: VPS},
+	{Type: DomainRule, Value: "domain:integrate.api.nvidia.com", Action: VPS},
 }
