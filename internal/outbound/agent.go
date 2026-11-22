@@ -6,21 +6,27 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net"
 	"os"
+	"time"
 
 	"github.com/soulcpd1/xrm2/internal/proto"
 )
 
 type Agent struct {
-	address string
-	socks5  string // если задан — подключаемся к address через этот SOCKS5
+	address       string
+	fallbackAgent string // второй xrm-agent (например, ZeroTier), если основной недоступен
+	socks5        string // если задан — подключаемся к address через этот SOCKS5 (режим агента)
+	directSocks5  string // если задан — прямой режим: xrm работает как чистый SOCKS5-клиент
 }
 
 func NewAgent(addr string) *Agent {
 	return &Agent{
-		address: addr,
-		socks5:  os.Getenv("XRM_AGENT_SOCKS5"),
+		address:       addr,                          // основной xrm-agent (XRM_AGENT)
+		fallbackAgent: os.Getenv("XRM_AGENT_FALLBACK"), // второй xrm-agent (XRM_AGENT_FALLBACK)
+		socks5:        os.Getenv("XRM_AGENT_SOCKS5"),   // fallback SOCKS5
+		directSocks5:  os.Getenv("XRM_DIRECT_SOCKS5"),  // прямой SOCKS5 (без агента)
 	}
 }
 
@@ -43,18 +49,25 @@ func (a *Agent) Ready() bool {
 // dialDirect — прямое TCP-подключение
 func (a *Agent) dialDirect(ctx context.Context) (net.Conn, error) {
 	var d net.Dialer
+	d.Timeout = 2 * time.Second
 	return d.DialContext(ctx, "tcp", a.address)
 }
 
-// dialViaSOCKS5 — TCP до socks5-прокси, затем SOCKS5 CONNECT до a.address
-func (a *Agent) dialViaSOCKS5(ctx context.Context) (net.Conn, error) {
+func (a *Agent) dialDirectTo(ctx context.Context, addr string) (net.Conn, error) {
+	var d net.Dialer
+	d.Timeout = 2 * time.Second
+	return d.DialContext(ctx, "tcp", addr)
+}
+
+// dialViaSOCKS5 — TCP до socks5-прокси, затем SOCKS5 CONNECT до target
+func (a *Agent) dialViaSOCKS5(ctx context.Context, target string) (net.Conn, error) {
 	var d net.Dialer
 	conn, err := d.DialContext(ctx, "tcp", a.socks5)
 	if err != nil {
 		return nil, fmt.Errorf("socks5 dial %s: %w", a.socks5, err)
 	}
 
-	host, portStr, err := net.SplitHostPort(a.address)
+	host, portStr, err := net.SplitHostPort(target)
 	if err != nil {
 		conn.Close()
 		return nil, fmt.Errorf("split host/port: %w", err)
@@ -149,34 +162,94 @@ func (a *Agent) Dial(
 	address string,
 ) (net.Conn, error) {
 
-	var conn net.Conn
-	var err error
-
-	if a.socks5 != "" {
-		conn, err = a.dialViaSOCKS5(ctx)
-	} else {
-		conn, err = a.dialDirect(ctx)
-	}
-	if err != nil {
-		return nil, err
+	// Прямой режим: xrm работает как чистый SOCKS5-клиент (без агента).
+	if a.directSocks5 != "" {
+		return a.dialViaSOCKS5(ctx, address)
 	}
 
-	err = proto.WriteRequest(conn, proto.Request{
-		Network: network,
-		Address: address,
-	})
-	if err != nil {
+	// Основной путь: прямой xrm-agent (XRM_AGENT), XRM_AGENT_SOCKS5 используется только в Fallback 2
+	log.Printf("[XRM] Dial: trying main path (agent=%s)", a.address)
+	conn, err := a.dialDirect(ctx)
+	if err == nil {
+		err = proto.WriteRequest(conn, proto.Request{
+			Network: network,
+			Address: address,
+		})
+		if err == nil {
+			log.Printf("[XRM] Dial: WriteRequest sent to agent")
+			return conn, nil
+		}
 		conn.Close()
-		return nil, err
+	}
+	log.Printf("[XRM] Dial: main path FAILED: %v", err)
+
+	// Fallback 1: если основной agent недоступен, пробуем второй agent (XRM_AGENT_FALLBACK)
+	if a.fallbackAgent != "" {
+		log.Printf("[XRM] Dial: trying fallback agent (%s)", a.fallbackAgent)
+		conn2, err2 := a.dialDirectTo(ctx, a.fallbackAgent)
+		if err2 == nil {
+			err2 = proto.WriteRequest(conn2, proto.Request{
+				Network: network,
+				Address: address,
+			})
+			if err2 == nil {
+				log.Printf("[XRM] Dial: fallback agent OK")
+				return conn2, nil
+			}
+			conn2.Close()
+		}
+		log.Printf("[XRM] Dial: fallback agent FAILED: %v", err2)
 	}
 
-	return conn, nil
+	// Fallback 2: если и второй agent недоступен, пробуем SOCKS5-резерв (XRM_AGENT_SOCKS5)
+	if a.socks5 != "" {
+		log.Printf("[XRM] Dial: trying fallback (socks5=%s)", a.socks5)
+		conn2, err2 := a.dialViaSOCKS5(ctx, address)
+		if err2 == nil {
+			log.Printf("[XRM] Dial: fallback OK")
+			return conn2, nil
+		}
+		log.Printf("[XRM] Dial: fallback FAILED: %v", err2)
+	}
+
+	return nil, fmt.Errorf("agent dial failed: %w (fallback also failed)", err)
 }
 
-func (a *Agent) ListenPacket(
-	ctx context.Context,
-	address string,
-) (net.PacketConn, error) {
 
-	return nil, errors.New("agent UDP not implemented yet")
+func (a *Agent) ListenPacket(ctx context.Context, address string) (net.PacketConn, error) {
+	log.Printf("[XRM] ListenPacket called for %s", address)
+	conn, err := a.Dial(ctx, "udp", address)
+	if err != nil {
+		return nil, err
+	}
+	return &udpPacketConn{conn: conn}, nil
 }
+
+type udpPacketConn struct {
+	conn net.Conn
+}
+
+func (c *udpPacketConn) ReadFrom(p []byte) (n int, addr net.Addr, err error) {
+	var length uint16
+	if err := binary.Read(c.conn, binary.BigEndian, &length); err != nil {
+		return 0, nil, err
+	}
+	n, err = io.ReadFull(c.conn, p[:length])
+	if err != nil {
+		return 0, nil, err
+	}
+	return n, nil, nil
+}
+
+func (c *udpPacketConn) WriteTo(p []byte, addr net.Addr) (n int, err error) {
+	if err := binary.Write(c.conn, binary.BigEndian, uint16(len(p))); err != nil {
+		return 0, err
+	}
+	return c.conn.Write(p)
+}
+
+func (c *udpPacketConn) Close() error { return c.conn.Close() }
+func (c *udpPacketConn) LocalAddr() net.Addr { return c.conn.LocalAddr() }
+func (c *udpPacketConn) SetDeadline(t time.Time) error { return c.conn.SetDeadline(t) }
+func (c *udpPacketConn) SetReadDeadline(t time.Time) error { return c.conn.SetReadDeadline(t) }
+func (c *udpPacketConn) SetWriteDeadline(t time.Time) error { return c.conn.SetWriteDeadline(t) }

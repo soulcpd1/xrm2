@@ -75,4 +75,7 @@ var LocalRules = []Rule{
         {Type: DomainRule, Value: "domain:pps.whatsapp.net", Action: VPS},
         {Type: DomainRule, Value: "domain:graph.whatsapp.com", Action: VPS},
         {Type: DomainRule, Value: "domain:graph.whatsapp.net", Action: VPS},
+        {Type: DomainRule, Value: "domain:build.nvidia.com", Action: VPS},
+        {Type: DomainRule, Value: "domain:api.nvcf.nvidia.com", Action: VPS},
+        {Type: DomainRule, Value: "domain:integrate.api.nvidia.com", Action: VPS},
 }

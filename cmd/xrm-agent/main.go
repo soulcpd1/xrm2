@@ -18,9 +18,18 @@ func main() {
 	)
 	defer cancel()
 
-	a := agent.New("192.168.100.1:7000")
+	// Слушаем на двух адресах: Nebula и AmneziaWG
+	addrs := []string{
+		"192.168.100.1:7000", // Nebula (основной)
+		"10.9.9.1:7000",
+		"10.8.0.2:7000",
+		"10.99.0.2:7000",      // AmneziaWG (резерв)
+		"10.147.17.1:7000",    // ZeroTier
+	}
 
-	log.Println("XRM Agent listening on 192.168.100.1:7000")
+	a := agent.New(addrs)
+
+	log.Printf("XRM Agent listening on: %v", addrs)
 
 	if err := a.Run(ctx); err != nil {
 		log.Fatal(err)
